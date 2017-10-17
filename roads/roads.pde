@@ -1,6 +1,6 @@
 
 void settings() {
-  lvlImage = loadImage("large.png");
+  lvlImage = loadImage("small.png");
   northRoad = loadImage("north.png");
   blankRoad = loadImage("texture.png");
   wall = loadImage("wall.png");
@@ -10,24 +10,16 @@ void settings() {
   COLS = imgWidth;
   ROWS = imgHeight;
   map = new Map();
+  
 }
 
-void createCars() {
-  while (cars.size() < NUM_CARS) {
-    Car car = new Car();
-    if (!map.isOccupied(car.pos)) {
-      map.setOccupied(car);
-
-      cars.add(car);
-    }
-  }
-}
 
 void setup() {
   map.clearOccupied();
 
   createCars();
   textFont(createFont("Consolas", 9));
+  frameRate(100);
   //noLoop();
 }
 
@@ -55,10 +47,22 @@ void draw() {
   createCars();
   map.checkTraffic();
 
-
+  for (int i = explosions.size() - 1; i >= 0; i -= 1) {
+    Explosion e = explosions.get(i);
+    if (e.dead) {
+      explosions.remove(i);
+    } else {
+      e.update();
+      e.draw();
+    }
+  }
   fill(255);
   text(cars.get(0).toString(), 10, (lvlImage.height * RES) + 10);
   //path.draw();
   //path.printPath();
   //image(lvlImage, 0, 0, lvlImage.width * RES, lvlImage.height * RES);
+}
+
+void mouseClicked() {
+  addExplosion(mouseX,mouseY);
 }

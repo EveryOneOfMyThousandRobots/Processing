@@ -1,5 +1,6 @@
 Node[][] nodes;
 ArrayList<Car> cars = new ArrayList<Car>();
+ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 final int NUM_CARS = 60;
 final int STOP_LIMIT = 300;
 

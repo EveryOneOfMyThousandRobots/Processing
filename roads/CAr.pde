@@ -1,6 +1,6 @@
 class Car {
   PVector pos, vel, acc;
-  float maxSpeed=random(0.5,2);
+  float maxSpeed=random(1,2);
   Node start, end;
   Path path;
   float facing;
@@ -80,6 +80,7 @@ class Car {
     }
     facing = vel.heading() + HALF_PI;
     if (staticCount > STOP_LIMIT) {
+      addExplosion(pos.x,pos.y);
       dead = true;
     }
   }

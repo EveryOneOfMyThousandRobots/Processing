@@ -7,7 +7,7 @@ final int BLACK = 0x000000;
 
 class Map {
 
-  float highestTraffic = 0;
+  float highestTraffic = 10;
 
   void checkTraffic() {
     highestTraffic = 0;

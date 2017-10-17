@@ -27,3 +27,18 @@ float heuristic(Node a, Node b) {
   
   return dist;
 }
+
+void createCars() {
+  while (cars.size() < NUM_CARS) {
+    Car car = new Car();
+    if (!map.isOccupied(car.pos)) {
+      map.setOccupied(car);
+
+      cars.add(car);
+    }
+  }
+}
+
+void addExplosion(float x, float y) {
+  explosions.add(new Explosion(x,y));
+}
