@@ -98,7 +98,7 @@ class Map {
       for (int iy = 0; iy < nodes[ix].length; iy += 1) {
         Node n = nodes[ix][iy];
         n.occupiedCarId = -1;
-        n.traffic -= 1.1;
+        n.traffic = lerp(n.traffic, 0, 0.01);
         if (n.traffic < 0) n.traffic = 0;
         
       }
@@ -128,6 +128,14 @@ class Map {
       for (Node nn : junction) {
         nn.occupiedCarId = car.id;
         nn.traffic += 1;
+        if (nn.traffic > 100) {
+        nn.traffic = 100;
+      }
+      }
+    } else {
+      n.traffic += 1;
+      if (n.traffic > 100) {
+        n.traffic = 100;
       }
     }
   }

@@ -1,6 +1,6 @@
 
 void settings() {
-  lvlImage = loadImage("small.png");
+  lvlImage = loadImage("large.png");
   northRoad = loadImage("north.png");
   blankRoad = loadImage("texture.png");
   wall = loadImage("wall.png");
