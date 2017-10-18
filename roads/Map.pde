@@ -23,7 +23,7 @@ class Map {
     for (int ix = 0; ix < nodes.length; ix += 1) {
       for (int iy = 0; iy < nodes[ix].length; iy += 1) {
         Node n = nodes[ix][iy];
-        n.cost = pow(1 + (n.traffic / highestTraffic), 2);
+        n.cost = pow(2 + (n.traffic / highestTraffic), 4);
         
       }
     }
@@ -77,6 +77,12 @@ class Map {
         nodes[ix][iy].checkLines();
       }
     }
+  }
+  
+  NodeType getNodeTypeAtPos(PVector pos) {
+    int xx = floor(pos.x / RES);
+    int yy = floor(pos.y / RES);
+    return nodes[xx][yy].type;
   }
   int getIdAtPos(PVector pos) {
     int xx = floor(pos.x / RES);
