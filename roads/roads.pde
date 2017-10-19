@@ -1,6 +1,6 @@
 
 void settings() {
-  lvlImage = loadImage("gridmap.png");
+  lvlImage = loadImage("small.png");
   northRoad = loadImage("north.png");
   blankRoad = loadImage("texture.png");
   wall = loadImage("wall.png");
@@ -10,7 +10,6 @@ void settings() {
   COLS = imgWidth;
   ROWS = imgHeight;
   map = new Map();
-  
 }
 
 
@@ -61,8 +60,11 @@ void draw() {
   //path.draw();
   //path.printPath();
   //image(lvlImage, 0, 0, lvlImage.width * RES, lvlImage.height * RES);
+  if (frameCount % 1000 == 0) {
+    println(map.toString());
+  }
 }
 
 void mouseClicked() {
-  addExplosion(mouseX,mouseY);
+  addExplosion(mouseX, mouseY);
 }

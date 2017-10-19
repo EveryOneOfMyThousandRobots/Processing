@@ -5,7 +5,7 @@ int debug = 0;
 long millisLast = 0;
 long millisTotal = 0;
 float seconds = 0;
-final int NUM_FINDERS = 7;
+final int NUM_FINDERS = 25;
 Grid grid;
 void settings() {
   level = loadImage("lvl4.png");

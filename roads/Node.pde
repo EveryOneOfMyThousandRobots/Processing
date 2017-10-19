@@ -19,7 +19,7 @@ class Node {
   String toString() {
     return id + " (" + ix + "," + iy + ") (" + pos.x + "," + pos.y + ")" + 
       ", t:"+type + ", n:" + neighbours.size() + " p:" + (previous != null ? previous.id : 0) + 
-      "targetPos: (" + targetPos.x + "," + targetPos.y + ")";
+      "targetPos: (" + targetPos.x + "," + targetPos.y + "), cost: " + cost;
   }
 
   Node copy() {
