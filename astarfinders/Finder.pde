@@ -15,6 +15,7 @@ class Finder {
   int id = getNextId("FINDER");
   color c = color(random(128, 255), random(128, 255), random(128, 255));
   PVector newPos;
+  int clipTimer = 0;
 
   String toString() {
     return id + " " + nf(maxSpeed, 1, 2) + " t:" + ticketsCompleted + " i:" + itemsPicked + " pl:" + picklist.size();
@@ -84,9 +85,9 @@ class Finder {
     picklist.add(0, grid.checkin);
     picklist.add(grid.getRandomDropOff());
   }
-  
+
   void resetNodes() {
-        for (int ix = 0; ix < nodes.length; ix += 1) {
+    for (int ix = 0; ix < nodes.length; ix += 1) {
       for (int iy = 0; iy < nodes[ix].length; iy += 1) {
         nodes[ix][iy].clear();
       }
@@ -206,8 +207,14 @@ class Finder {
           break;
         }
       }
+      if (clipTimer > 0) {
+        vel.setMag(maxSpeed / 4);
+        clipped= false;
+        clipTimer -= 1;
+      }
 
       if (clipped) {
+        clipTimer = 50;
         //vel = PVector.sub(pos, clippedVector);
         vel.setMag(maxSpeed / 4);
         pos.add(vel);
@@ -221,8 +228,11 @@ class Finder {
         findPath();
         println("finding new path");
       } else {
-        vel.setMag(maxSpeed);
-
+        if (clipTimer > 0) {
+          vel.setMag(maxSpeed / 3);
+        } else {
+          vel.setMag(maxSpeed);
+        }
         pos.add(vel);
         int ix = floor(pos.x / res);
         int iy = floor(pos.y / res);
@@ -234,8 +244,8 @@ class Finder {
       framesTaken +=1;
     }
   }
-  
-  
+
+
 
   void draw(int debug) {
     stroke(0);

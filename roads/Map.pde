@@ -23,8 +23,7 @@ class Map {
     for (int ix = 0; ix < nodes.length; ix += 1) {
       for (int iy = 0; iy < nodes[ix].length; iy += 1) {
         Node n = nodes[ix][iy];
-        n.cost = pow(2 + (n.traffic / highestTraffic), 4);
-        
+        n.cost = pow(2 + (n.traffic / highestTraffic), 10);
       }
     }
   }
@@ -69,7 +68,7 @@ class Map {
     }
     checkLines();
   }
-  
+
   void checkLines() {
     //rectMode(CORNER);
     for (int ix = 0; ix < nodes.length; ix += 1) {
@@ -78,7 +77,7 @@ class Map {
       }
     }
   }
-  
+
   NodeType getNodeTypeAtPos(PVector pos) {
     int xx = floor(pos.x / RES);
     int yy = floor(pos.y / RES);
@@ -106,27 +105,36 @@ class Map {
         n.occupiedCarId = -1;
         n.traffic = lerp(n.traffic, 0, 0.01);
         if (n.traffic < 0) n.traffic = 0;
-        
       }
     }
   }
 
+  Node getNodeAtPos(PVector pos) {
+    return getNodeAtPos(pos.x, pos.y);
+  }
+
+  Node getNodeAtPos(float x, float y) {
+    int xx = floor(x / RES);
+    int yy = floor(y / RES);
+    return nodes[xx][yy];
+  }
+
   boolean isOccupied(PVector pos) {
-    int xx = floor(pos.x / RES);
-    int yy = floor(pos.y / RES);
-    return nodes[xx][yy].occupiedCarId > -1;
+    //int xx = floor(pos.x / RES);
+    //int yy = floor(pos.y / RES);
+    return getNodeAtPos(pos).occupiedCarId > -1;
   }
 
   int isOccupiedBy(PVector pos) {
-    int xx = floor(pos.x / RES);
-    int yy = floor(pos.y / RES);
-    return nodes[xx][yy].occupiedCarId;
+    //int xx = floor(pos.x / RES);
+    //int yy = floor(pos.y / RES);
+    return getNodeAtPos(pos).occupiedCarId;
   }
 
   void setOccupied(Car car) {
-    int xx = floor(car.pos.x / RES);
-    int yy = floor(car.pos.y / RES);
-    Node n = nodes[xx][yy];
+    //int xx = floor(car.pos.x / RES);
+    //int yy = floor(car.pos.y / RES);
+    Node n = getNodeAtPos(car.pos);
     n.occupiedCarId = car.id;
     if (n.type == NodeType.ANY) {
       ArrayList<Node> junction = new ArrayList<Node>();
@@ -135,8 +143,8 @@ class Map {
         nn.occupiedCarId = car.id;
         nn.traffic += 1;
         if (nn.traffic > 100) {
-        nn.traffic = 100;
-      }
+          nn.traffic = 100;
+        }
       }
     } else {
       n.traffic += 1;
@@ -144,6 +152,16 @@ class Map {
         n.traffic = 100;
       }
     }
+  }
+
+  String toString() {
+    String output = "";
+    for (int ix = 0; ix < nodes.length; ix += 1) {
+      for (int iy = 0; iy < nodes[ix].length; iy += 1) {
+        output += "\n[" + ix + "][" + iy + "]: " + nodes[ix][iy];
+      }
+    }
+    return output;
   }
 
   void setOccupied() {
