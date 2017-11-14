@@ -10,16 +10,16 @@ void setup() {
   size(500,500);
   
   circle_radius = width / 3;
-  square_radius = width / 2;
+  square_radius = width / 3;
   cx = width / 2;
   cy = height / 2;
-  PVector start = polarToVector(HALF_PI,square_radius);
+  PVector start = polarToVector(PI + QUARTER_PI,square_radius);
   int counter = 1;
-  PVector end = polarToVector(HALF_PI + (HALF_PI * counter), square_radius);
+  PVector end = polarToVector(PI + QUARTER_PI + HALF_PI, square_radius);
   float ii = 0;
   float step = spacing / HALF_PI;
   
-  for (float a = 0; a < TWO_PI; a += spacing) {
+  for (float a = PI + QUARTER_PI; a < PI + QUARTER_PI + TWO_PI; a += spacing) {
     circle.add(polarToVector(a,circle_radius));
     
     PVector sq = PVector.lerp(start, end, ii); 
@@ -31,7 +31,7 @@ void setup() {
       counter += 1;
       ii = 0;
       start = end;
-      end = polarToVector(HALF_PI * counter, square_radius);
+      end = polarToVector(PI + QUARTER_PI + (HALF_PI * counter), square_radius);
     }
   }
   //noLoop();
@@ -56,6 +56,7 @@ void draw(){
     x = lerp(c.x, s.x, amt);
     y = lerp(c.y, s.y, amt);
     vertex(x,y);
+    //ellipse(x,y,4,4);
     
   }
   endShape(CLOSE);
