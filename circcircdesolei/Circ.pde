@@ -3,7 +3,7 @@ class Circ {
   Circ child;
 
   PVector pos;
-  float angle;
+  float angle = 0;//HALF_PI / 2;
   float radius;
   float angle_inc;
 
@@ -42,7 +42,7 @@ class Circ {
     noFill();
     stroke(255);
     angle += angle_inc;
-    ellipse(pos.x, pos.y, radius * 2, radius * 2);
+    //ellipse(pos.x, pos.y, radius * 2, radius * 2);
     if (child != null) {
       child.pos.set(pos.x + radius * cos(angle), pos.y + radius * sin(angle));
       child.draw();
