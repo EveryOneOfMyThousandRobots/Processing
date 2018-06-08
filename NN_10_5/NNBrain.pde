@@ -4,6 +4,7 @@ class NeuralNetwork {
   Matrix hidden, hiddenWeights, hiddenBias;
   Matrix output, outputWeights, outputBias;
   float learningRate;
+  float totalError = 0;
 
   NeuralNetwork(int numInputs, int numHidden, int numOutputs) {
     this.numInputs = numInputs;
@@ -55,6 +56,7 @@ class NeuralNetwork {
   }
   
   void training(float[][] trainingData, float[][] targets) {
+    totalError = 0;
     for (int i = 0; i < trainingData.length; i += 1) {
       setInput(trainingData[i]);
       Matrix outputs = feedForward();
@@ -62,12 +64,35 @@ class NeuralNetwork {
       
       Matrix targetMx = Matrix.fromArray(targets[i]);
       //
-      Matrix errorMx = Matrix.sub(targetMx, outputs);
-      println("\ninput");
-      input.display();
-      println("\nerror");
-      errorMx.display();
+      Matrix outputErrors = Matrix.sub(targetMx, outputs);
+      Matrix gradients = outputs.copy();
+      gradients.setDSig();
+      gradients.mult(outputErrors);
+      gradients.mult(learningRate);
+      
+      Matrix hidden_t = Matrix.transpose(hidden);
+      Matrix outputWeightsDeltas = Matrix.matrixProduct(gradients, hidden_t);
+      outputWeights.add(outputWeightsDeltas);
+  
+      //hidden errors
+      Matrix hiddenWeights_t = Matrix.transpose(outputWeights);
+      Matrix hiddenErrors = Matrix.matrixProduct(hiddenWeights_t, outputErrors);
+      
+      //hidden gradient
+      Matrix hiddenGradients = hidden.copy();
+      hiddenGradients.setDSig();
+      hiddenGradients.mult(hiddenErrors);
+      hiddenGradients.mult(learningRate);
+      
+      //hidden deltas input -> hidden deltas
+      Matrix input_t = Matrix.transpose(input);
+      Matrix HiddenWeightDeltas = Matrix.matrixProduct(hiddenGradients, input_t);
+      hiddenWeights.add(HiddenWeightDeltas);
+      
+      //hiddenWeights.display();
+      totalError += targets[i][0] - outputs.data[0][0];
     }
+    //println(totalError);
     
   }
 

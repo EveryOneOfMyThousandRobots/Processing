@@ -43,15 +43,7 @@ public static class Matrix {
     applet = applet_;
   }
 
-  Matrix transpose() {
-    Matrix result = new Matrix(this.cols, this.rows);
-    for (int r = 0; r < rows; r += 1) {
-      for (int c = 0; c < cols; c += 1) {
-        result.data[c][r] = data[r][c];
-      }
-    }
-    return result;
-  }
+
 
   String toString() {
     return this.getClass() + " (" + rows + "x" + cols + ")";
@@ -201,6 +193,19 @@ public static class Matrix {
     }
   }
 
+  void setDSig() {
+
+    for (int r = 0; r < rows; r += 1) {
+      for (int c = 0; c < cols; c += 1) {
+        data[r][c] = Matrix.dsig(data[r][c]);
+      }
+    }
+  }
+
+  static float dsig(float y ) {
+    return y * (1 - y);
+  }
+
   void power(float e) {
     for (int r = 0; r < rows; r += 1) {
       for (int c = 0; c < cols; c += 1) {
@@ -259,6 +264,16 @@ public static class Matrix {
     }
 
     return nm;
+  }
+
+  static Matrix transpose(Matrix a) {
+    Matrix result = new Matrix(a.cols, a.rows);
+    for (int r = 0; r < a.rows; r += 1) {
+      for (int c = 0; c < a.cols; c += 1) {
+        result.data[c][r] = a.data[r][c];
+      }
+    }
+    return result;
   }
 
   static Matrix fromArray(float[] arr) {
