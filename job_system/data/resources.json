@@ -1,0 +1,37 @@
+[
+		{	
+			"id" : "resource::tree",
+			"name" : "Tree",
+			"gives" : "material::wood",
+			"quantity" : 1,
+			"colour" : "00aa00",
+			"solid" : true
+		},
+		{
+			"id" : "resource::iron_ore",
+			"name" : "Iron Ore",
+			"gives" : "material::iron_ore",
+			"quantity" : 1,
+			"colour" : "999999",
+			"solid" : true
+		
+		},
+		{
+			"id" : "resource::gold_ore",
+			"name" : "Gold Ore",
+			"gives" : "material::gold_ore",
+			"quantity" : 1,
+			"colour" : "aaaa00",
+			"solid" : true
+		
+		},
+		{
+			"id" : "resource::uranium_ore",
+			"name" : "Uranium Ore",
+			"gives" : "material::uranium_ore",
+			"quantity" : 1,
+			"colour" : "00ff66",
+			"solid" : true
+		
+		}
+	]

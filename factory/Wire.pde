@@ -33,8 +33,10 @@ class Wire {
       itemPos.normalize();
       itemPos.mult(dist * itemProgress);
       itemPos.add(from.pos);
+      itemPos.y += HALF_IOSIZE;
 
       if (itemProgress >= 1) {
+        item.quality *= to.parent.factor;
         to.parent.items.add(item);
         item = null;
         itemProgress = 0;
@@ -54,7 +56,7 @@ class Wire {
     line(x1, y1, x2, y2);
     if (item != null) {
       ellipse(itemPos.x, itemPos.y, IOSIZE, IOSIZE);
-      text(itemPos.toString() + " d:" + nf(dist,3,3), itemPos.x + 10, itemPos.y + 10);
+      //text(itemPos.toString() + " d:" + nf(dist,3,3), itemPos.x + 10, itemPos.y + 10);
     }
   }
 }

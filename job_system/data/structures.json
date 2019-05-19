@@ -1,0 +1,21 @@
+[
+ {
+	"id" : "structure::chest",
+	"name" : "chest",
+	"receives" : [ {"id" : "all"} ],
+	"colour" : "4c2713",
+	"inventory_slots" : "infinite",
+	"input_slots" : 0,
+	"output_slots" : 0
+	
+ },
+ {
+	"id" : "structure::furnace",
+	"name" : "furnace",
+	"receives" : [ {"id" : "resource::iron_ore"}, {"id" : "resource::gold_ore"}],
+	"colour" : "b7afaa",
+	"inventory_slots" : "0",
+	"input_slots" : 1,
+	"output_slots" : 1
+ }
+]

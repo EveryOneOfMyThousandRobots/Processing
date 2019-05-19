@@ -94,7 +94,6 @@ import processing.opengl.PGraphics2D;
     size(viewport_w, viewport_h, P2D);
     // some MSAA antialiasing
     smooth(8); 
-    PJOGL.profile = 3;
   }
   
   

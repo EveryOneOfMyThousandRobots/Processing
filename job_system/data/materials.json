@@ -1,0 +1,22 @@
+[
+	{
+	"id" : "material::iron_plates",
+	"name" : "iron plates"
+	},
+	{
+	"id" : "material::wood",
+	"name" : "wood"
+	},
+	{
+	"id" : "material::iron_ore",
+	"name" : "iron ore"
+	},
+	{
+	"id" : "material::gold_ore",
+	"name" : "gold ore"
+	},
+	{
+	"id" : "material::uranium_ore",
+	"name" : "uranium ore"
+	}
+]

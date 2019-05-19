@@ -15,10 +15,11 @@ class Machine {
   final TYPE type;
   Input[] in = new Input[5];
   Output[] out = new Output[5];
-  int interval = 100;
+  int interval = floor(random(50, 100));
   int timer = 0;
   float size = SIZE;
   ArrayList<Item> items = new ArrayList<Item>();
+  float factor = 1;
 
   int outputs = 5;
   int inputs = 5;
@@ -29,23 +30,47 @@ class Machine {
     if (masterInput) {
       type = TYPE.CREATE_ITEM;
       inputs = 0;
-      outputs = 1;
+      outputs = 5;
       out[0] = new Output(this, 0);
     } else if (masterOutput) {
       type = TYPE.TAKE_ITEM;
-      inputs = 1;
+      inputs = 5;
       outputs = 0;
       in[0] = new Input(this, 0);
     } else {
       type = TYPE.CHANGER;
-      for (int i = 0; i < 5; i += 1) {
-        in[i] = new Input(this, i);
-        out[i] = new Output(this, i);
-      }
+      factor = 1 + random(0.0001, 0.001);
+    }
+
+    for (int i = 0; i < inputs; i += 1) {
+      in[i] = new Input(this, i);
+    }
+    for (int i = 0; i < outputs; i += 1) {
+      out[i] = new Output(this, i);
     }
   }
 
-  InputOutput clicked() {
+  void setPos(float x, float y) {
+    pos.x = x - HALF_SIZE;
+    pos.y = y - HALF_SIZE;
+
+    for (int i = 0; i < inputs; i += 1) {
+      in[i].setPos();
+    }
+    for (int i = 0; i < outputs; i += 1) {
+      out[i].setPos();
+    }
+  }
+
+  boolean clicked() {
+    if (mouseX >= pos.x && mouseX <= pos.x + SIZE && mouseY >= pos.y && mouseY <= pos.y + SIZE) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  InputOutput inputOutputClicked() {
     InputOutput n = null;
     if (mouseX >= pos.x && mouseX <= pos.x + SIZE && mouseY >= pos.y && mouseY <= pos.y + SIZE) {
       println("machine " + id);
@@ -78,7 +103,8 @@ class Machine {
     if (timer >= interval) {
       timer = 0;
       if (outputs > 0) {
-        if (masterInput) {
+        if (masterInput && money >= 1) {
+          money -= 1;
           items.add(new Item());
         }
         size = float(SIZE) * 1.5;
@@ -89,6 +115,13 @@ class Machine {
             }
           }
         }
+      }
+
+      if (masterOutput) {
+        for (Item item : items) {
+          money += item.quality;
+        }
+        items.clear();
       }
     }
     size = lerp(size, SIZE, 0.1);
@@ -101,8 +134,9 @@ class Machine {
     stroke(255);
     fill(200, 200, 10);
     rect(pos.x, pos.y, size, size);
-    stroke(128);
-    fill(255);
+
+    fill(0);
+    text(items.size(), pos.x + IOSIZE + 10, pos.y + IOSIZE + 5);
 
     for (int i = 0; i < inputs; i += 1) {
 

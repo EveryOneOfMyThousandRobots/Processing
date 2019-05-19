@@ -1,0 +1,10 @@
+[
+	{
+		"id" : "recipe::iron_plates",
+		"name" : "iron plates",
+		"timeTaken" : 1,
+		"ingredients" : [{"id" : "resource::iron_ore", "qty" : 1}],
+		"products" : [{"id" : "material::iron_plates", "qty" : 1}]
+	}
+	
+]
