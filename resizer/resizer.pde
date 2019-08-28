@@ -2,7 +2,7 @@ PImage img;
 
 void setup() {
   size(800, 800);
-  img = loadImage("lady002.jpg");
+  img = loadImage("lady002b.jpg");
   noLoop();
 }
 
