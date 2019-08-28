@@ -27,7 +27,8 @@ public class Macros {
         new ReplaceMacros("setup", "void setup(){\n   \n}\n",3),
         new ReplaceMacros("draw", "void draw(){\n   \n}\n",3),
         new ReplaceMacros("swing", "import javax.swing.*;\n",0),
-        new ReplaceMacros("input", "JOptionPane.showInputDialog(\"\")",3, "import javax.swing.JOptionPane;\n"),
+        new ReplaceMacros("input", "JOptionPane.showInputDialog(\"\")",2, "import javax.swing.JOptionPane;\n"),
+        new ReplaceMacros("output", "JOptionPane.showMessageDialog(null, \"\");",3, "import javax.swing.JOptionPane;\n"),
         new ReplaceMacros("inputstr", "String str = JOptionPane.showInputDialog(\"\");",3, "import javax.swing.JOptionPane;\n"),
         new CodeSkeletonMacro(),
         new FunctionMacro()

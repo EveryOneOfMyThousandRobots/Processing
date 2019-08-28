@@ -77,6 +77,8 @@ class Car {
       staticCount = 0;
     } else {
       staticCount += 1;
+      start = map.getNodeAtPos(pos);
+      newPath();
     }
     facing = vel.heading() + HALF_PI;
     if (staticCount > STOP_LIMIT) {

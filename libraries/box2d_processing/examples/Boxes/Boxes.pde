@@ -6,9 +6,9 @@
 // Basic example of falling rectangles
 
 import shiffman.box2d.*;
-import org.jbox2d.collision.shapes.*;
-import org.jbox2d.common.*;
-import org.jbox2d.dynamics.*;
+//import org.jbox2d.collision.shapes.*;
+//import org.jbox2d.common.*;
+//import org.jbox2d.dynamics.*;
 
 // A reference to our box2d world
 Box2DProcessing box2d;
@@ -68,7 +68,3 @@ void draw() {
     }
   }
 }
-
-
-
-
