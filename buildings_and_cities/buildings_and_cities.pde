@@ -16,14 +16,24 @@ TYPES[][] displayMap;
 TYPES[][] typeMap;
 int[][] biomeMap;
 
-final int MAP_WIDTH = 400;
+final int MAP_WIDTH = 200;
 final int MAP_HEIGHT = MAP_WIDTH;
 int RES = 0;
 final int WINDOW_WIDTH = 800;
 final int WINDOW_HEIGHT = WINDOW_WIDTH;
 
 PGraphics mapGraphics;
-
+color[] colours = {
+  #10C135, 
+  #25963E, 
+  #D19C4C, 
+  #9D5F38, 
+  #5d3a1a, 
+  #4b3621, 
+  #513b26, 
+  #452f1a, 
+  #654321
+};
 void settings() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT);
   noSmooth();
@@ -60,18 +70,19 @@ void reset() {
       }
     }
   }
-  for (int i = 0; i < 20; i += 1) {
+  addBiomes();
+}
 
-    biomes.add(new Biome(color(random(255), random(255), random(255))));
-
-    biomes.get(biomes.size()-1).ignoresStructures = true;
+void addBiomes() {
+  while (biomes.size() < 20) {
+    biomes.add(new Biome(getColour()));
   }
 }
 
 void draw() {
 
   mapGraphics.beginDraw();
-  mapGraphics.background(0);
+  mapGraphics.background(51);
 
   mapGraphics.loadPixels();
   for (int x = 0; x < MAP_WIDTH; x += 1) {
@@ -103,10 +114,19 @@ void draw() {
       b.update();
     }
   }
+  
 
   for (Biome b : biomes) {
     b.swapLists();
+    b.checkAlive();
   }
+
+  for (int i = biomes.size()-1; i >= 0; i -= 1) {
+    if (!biomes.get(i).alive) {
+      biomes.remove(i);
+    }
+  }
+  //addBiomes();
   mapGraphics.updatePixels();
   mapGraphics.stroke(255, 64);
   for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
@@ -117,11 +137,61 @@ void draw() {
     mapGraphics.line(0, y, MAP_WIDTH, y);
   }
 
+  
+  if (biomes.size() == 0) {
+    checkBiomes();
+  }
+
+
 
 
   mapGraphics.endDraw();
   image(mapGraphics, 0, 0, width, height);
   text("(" + mouseX + "," + mouseY + ")\n(" + (mouseX / RES) + "," + (mouseY/ RES) + ")", 10, 10);
+}
+
+void checkBiomes() {
+
+  for (int x = 0; x < MAP_WIDTH; x += 1) {
+    for (int y = 0; y < MAP_HEIGHT; y += 1) {
+      
+      if (biomeMap[x][y] == -1) continue;
+      HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+      for (int xx = -1; xx <= 1; xx += 1) {
+        int xp = x + xx;
+        for (int yy = -1; yy <= 1; yy += 1) {
+          int yp = y + yy;
+          if (xp == x && yp == y) continue;
+          if (!OOB(xp, yp)) {
+            int v = biomeMap[xp][yp];
+
+            if (v > 0) {
+              if (map.containsKey(v)) {
+                map.put(v, map.get(v)+1);
+              } else {
+                map.put(v, 1);
+              }
+            }
+          }
+        }
+      }
+
+      int largest = -1;
+      int idOfLargest = -1;
+
+      for (int id : map.keySet()) {
+        int v = map.get(id);
+        if (v > largest) {
+          largest = v;
+          idOfLargest = id;
+        }
+      }
+
+      if (idOfLargest > 0 && largest > 4) {
+        biomeMap[x][y] = idOfLargest;
+      }
+    }
+  }
 }
 
 void keyReleased() {

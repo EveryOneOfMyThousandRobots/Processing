@@ -5,6 +5,7 @@ class Biome {
   ArrayList<IntPair> toCheck = new ArrayList<IntPair>();
   ArrayList<IntPair> newNodes = new ArrayList<IntPair>();
   boolean ignoresStructures = false;
+  boolean alive = true;
   final int id;
   {
     biome_id += 1;
@@ -15,6 +16,12 @@ class Biome {
   color c;
   boolean first = true;
 
+  int startX = -1, startY = -1;
+  Biome(color c, int x, int y) {
+    this(c);
+    this.startX = x;
+    this.startY
+  }
   Biome(color c) {
     this.c = c;
     lookup.put(id, this);
@@ -78,12 +85,26 @@ class Biome {
     toCheck = newNodes;
     newNodes = new ArrayList<IntPair>();
   }
+  
+  void checkAlive() {
+    if (toCheck.size() == 0) alive = false;
+  }
 
   void update() {
+    if (!alive) return;
+    
+    
+    
     //println(toCheck.size());
     if (first) {
       boolean found = false;
+      int attempts = 0;
       while (!found) {
+        attempts += 1;
+        if (attempts > 100) {
+          alive = false;
+          return;
+        }
         int x = floor(random(MAP_WIDTH));
         int y = floor(random(MAP_HEIGHT));
         TYPES t = getType(x, y);

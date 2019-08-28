@@ -25,3 +25,7 @@ class IntPair {
 IntPair MakePair(int x, int y) {
   return new IntPair(x, y);
 }
+
+color getColour() {
+  return colours[floor(random(colours.length))];
+}

@@ -45,38 +45,80 @@ void fixBuildings() {
   // add doors
   //println("add doors");
   for (Building building : buildings) {
-    int xs = -1, xe = -1, ys = -1, ye = -1; 
+
     switch (building.facing) {
     case EAST:
-      xs = building.x + building.w;
-      xe = xs;
-      ys = building.y + 1;
-      ye = building.y + building.h - 2;
+      makeDoorEastWall(building);
       break;
     case WEST:
-      xs = building.x;
-      xe = xs;
-      ys = building.y + 1;
-      ye = building.y + building.h - 2;    
+      makeDoorWestWall(building);
       break;
     case NORTH:
-      xs = building.x+1;
-      xe = xs + building.w - 2;
-      ys = building.y;
-      ye = ys;    
+      makeDoorNorthWall(building);
       break;
     case SOUTH:
-      xs = building.x+1;
-      xe = xs + building.w - 2;
-      ys = building.y + building.h;
-      ye = ys;    
+      makeDoorSouthWall(building);
       break;
     }
-    makeDoor(xs,xe,ys,ye);
+
+    int r = floor(random(0, 3));
+
+    if (r > 0 && random(1) < 0.5) {
+      for (int i = 0; i < r; i += 1) {
+        int rr = floor(random(4));
+        switch(rr) {
+        case 0:
+        makeDoorSouthWall(building);
+          break;
+        case 1:
+        makeDoorNorthWall(building);
+          break;
+        case 2:
+        makeDoorEastWall(building);
+          break;
+        case 3:
+        makeDoorWestWall(building);
+          break;
+        }
+      }
+    }
   }
 }
 
-void makeEastDoor(Building b) {
+void makeDoorSouthWall(Building b) {
+
+  int xs = b.x+1;
+  int xe = xs + b.w - 2;
+  int ys = b.y + b.h;
+  int ye = ys;    
+  makeDoor(xs, xe, ys, ye);
+}
+
+void makeDoorNorthWall(Building b) {
+
+  int xs = b.x+1;
+  int xe = xs + b.w - 2;
+  int ys = b.y;
+  int ye = ys;   
+  makeDoor(xs, xe, ys, ye);
+}
+
+void makeDoorWestWall(Building b) {
+
+  int xs = b.x;
+  int xe = xs;
+  int ys = b.y + 1;
+  int ye = b.y + b.h - 2;
+  makeDoor(xs, xe, ys, ye);
+}
+
+void makeDoorEastWall(Building b) {
+
+  int xs = b.x + b.w;
+  int xe = xs;
+  int ys = b.y + 1;
+  int ye = b.y + b.h - 2;
+  makeDoor(xs, xe, ys, ye);
 }
 
 void makeDoor(int xs, int xe, int ys, int ye) {
@@ -144,41 +186,7 @@ int countNeighbours(int x, int y, int pattern) {
   return count;
 }
 
-void makeRoads() {  
 
-  //roads down
-  for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
-    for (int y = 0; y < MAP_HEIGHT; y += BLOCK_HEIGHT) {
-      if (xChance(x)) {
-        for (int yy = y; yy < y + BLOCK_HEIGHT && yy < MAP_HEIGHT; yy += 1) {
-          for (int xx = x; xx < x + ROAD_WIDTH && xx < MAP_WIDTH; xx += 1) {
-            typeMap[xx][yy] = TYPES.ROAD; 
-            if (xChance(xx) || xChance(x)) {
-              displayMap[xx][yy] = TYPES.ROAD;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  //roads across
-  for (int y = 0; y < MAP_HEIGHT; y += BLOCK_HEIGHT) {
-    for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
-
-      if (xChance(x)) {
-        for (int xx = x; xx < x + BLOCK_HEIGHT && xx < MAP_WIDTH; xx += 1) {
-          for (int yy = y; yy < y + ROAD_WIDTH && yy < MAP_HEIGHT; yy += 1) {
-            typeMap[xx][yy] = TYPES.ROAD; 
-            if (xChance(xx) || xChance(x)) {
-              displayMap[xx][yy] = TYPES.ROAD;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 
 TYPES getType(int x, int y) {
   if (OOB(x, y)) return null; 
