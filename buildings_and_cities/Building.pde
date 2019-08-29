@@ -18,16 +18,19 @@ class Building {
 
 void erodeBuildings() {
   for (Building b : buildings) {
-    //if (!xChance2(b.x)) {
-    Eroder e = new Eroder(b);
-    e.erodeBuilding();
-    //}
+    if (!xChance2(b.x)) {
+      Eroder e = new Eroder(b);
+      e.erodeBuilding();
+      if (random(1) < 0.3 && xChance2(b.x)) {
+        e.erodeBuilding();
+      }
+    }
   }
 }
 
 class Eroder {
-  ArrayList<IntPair> toCheck = new ArrayList<IntPair>();
-  ArrayList<IntPair> newNodes = new ArrayList<IntPair>();
+  ArrayList<IntPair> toCheck; 
+  ArrayList<IntPair> newNodes; 
   int[][] map;
   final int w, h;
   Building b;
@@ -59,35 +62,41 @@ class Eroder {
     this.b = b;
     this.w = b.w;
     this.h = b.h;
-    map = new int[b.w][b.h];
+    map = new int[w][h];
   }
   void erodeBuilding() {
     int xStart = 0, yStart = 0;
+    toCheck = new ArrayList<IntPair>();
+    newNodes = new ArrayList<IntPair>();
 
+    int c = floor(random(3));
 
-    if (random(1) < 0.5) {
+    if (c == 0) {
       if (random(1) < 0.5) {
         xStart = 0;
       } else {
-        xStart = w;
+        xStart = w-1;
       }
-      yStart = floor(random(h+1));
-    } else {
+      yStart = floor(random(h));
+    } else if (c == 1) {
       if (random(1) < 0.5) {
         yStart = 0;
       } else {
-        yStart = h;
+        yStart = h-1;
       }
-      xStart = floor(random(w+1));
+      xStart = floor(random(w));
+    } else {
+      yStart = floor(random(h));
+      xStart = floor(random(w));
     }
     toCheck.add(MakePair(xStart, yStart));
 
     int cycles = 10;
     int iterationRange = 6;
-    
+
     for (int i = 0; i < cycles; i += 1) {
       if (toCheck.isEmpty()) break;
-      
+
       int iterations = floor(random(1, iterationRange));
       for (int j = 0; j < iterations; j += 1) {
         boolean ok =false;

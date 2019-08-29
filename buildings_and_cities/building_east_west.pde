@@ -61,11 +61,11 @@ void makeBuildings_EAST_WEST(int dir) {
           int bry = y + b_height;
 
           buildings.add(new Building(tlx, tly, b_width,b_height,dir == 1 ? FACING.WEST : FACING.EAST));
-          for (int xx = tlx; xx <= brx; xx += 1) {
-            for (int yy = tly; yy <= bry; yy += 1) {
+          for (int xx = tlx; xx < brx; xx += 1) {
+            for (int yy = tly; yy < bry; yy += 1) {
               TYPES tt = getType(xx, yy);
               if (tt == null) {
-                if (xx == tlx || xx == brx || yy == tly || yy == bry) {
+                if (xx == tlx || xx == brx-1 || yy == tly || yy == bry-1) {
                   typeMap[xx][yy] = TYPES.WALL;
                   displayMap[xx][yy] = TYPES.WALL;
                 } else {

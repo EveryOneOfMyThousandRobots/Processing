@@ -60,11 +60,11 @@ void makeBuildings_NORTH_SOUTH(int dir) {
           int bry = dir == 1 ? yp + b_height : yp;
 
           buildings.add(new Building(tlx, tly, b_width,b_height,dir == 1 ? FACING.NORTH : FACING.SOUTH));
-          for (int xx = tlx; xx <= brx; xx += 1) {
-            for (int yy = tly; yy <= bry; yy += 1) {
+          for (int xx = tlx; xx < brx; xx += 1) {
+            for (int yy = tly; yy < bry; yy += 1) {
               TYPES tt = getType(xx, yy);
               if (tt == null) {
-                if (xx == tlx || xx == brx || yy == tly || yy == bry) {
+                if (xx == tlx || xx == brx-1 || yy == tly || yy == bry-1) {
                   typeMap[xx][yy] = TYPES.WALL;
                   displayMap[xx][yy] = TYPES.WALL;
                 } else {

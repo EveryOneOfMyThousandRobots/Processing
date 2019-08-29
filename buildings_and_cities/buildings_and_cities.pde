@@ -18,7 +18,7 @@ TYPES[][] displayMap;
 TYPES[][] typeMap;
 int[][] biomeMap;
 
-final int MAP_WIDTH = 400;
+final int MAP_WIDTH = 200;
 final int MAP_HEIGHT = MAP_WIDTH;
 int RES = 0;
 final int WINDOW_WIDTH = 800;
@@ -52,6 +52,7 @@ void setup() {
 }
 
 void reset() {
+  cbReset();
   biomesChecked = false;
   buildings.clear();
   typeMap = new TYPES[MAP_WIDTH][MAP_HEIGHT]; 
@@ -78,19 +79,7 @@ void reset() {
   }
 }
 
-void addBiomes() {
-  while (biomes.size() < 10) {
-    biomes.add(new Biome(getColour()));
-  }
 
-  for (int x = 0; x < width; x += BLOCK_WIDTH) {
-    for (int y = 0; y < height; y += BLOCK_WIDTH) {
-      biomes.add(new Biome(getColour(), x, y, BLOCK_WIDTH, BLOCK_WIDTH));
-    }
-  }
-
-  base = biomes.get(floor(random(biomes.size())));
-}
 
 void draw() {
 
@@ -140,6 +129,32 @@ void draw() {
         biomes.remove(i);
       }
     }
+
+    if (biomes.size() == 0) {
+      if (!cbActive) {
+        switch(cbStep) {
+        case 0:
+          SetBiomeCheck(1, 4, false);
+          break;
+        case 1:
+          SetBiomeCheck(2, 3, false);
+          break;
+        case 2:
+          SetBiomeCheck(1, 8, false);
+          break;
+        case 3:
+          setMissedBiomes();
+        }
+
+        //
+        //
+        //
+        //checkBiomes(4, 8, true);
+        //
+      }
+    }
+
+    checkBiomes();
   }
   //addBiomes();
   mapGraphics.updatePixels();
@@ -147,24 +162,19 @@ void draw() {
   for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
     mapGraphics.line(x, 0, x, MAP_HEIGHT);
   }
+  
+  //mapGraphics.stroke(255,64);
+  //mapGraphics.fill(51,128);
+  //for (Building b : buildings) {
+  //  mapGraphics.rect(b.x, b.y, b.w, b.h);
+  //}
 
   for (int y = 0; y < MAP_HEIGHT; y += BLOCK_WIDTH) {
     mapGraphics.line(0, y, MAP_WIDTH, y);
   }
 
 
-  if (!biomesChecked && biomes.size() == 0) {
 
-    SetBiomeCheck(1, 4, false);
-    //checkBiomes(2, 3, false);
-    //checkBiomes(3, 2, false);
-    //checkBiomes(4, 1, false);
-    //checkBiomes(4, 8, true);
-    //setMissedBiomes();
-    biomesChecked = true;
-  }
-
-  checkBiomes();
 
 
 
@@ -175,103 +185,16 @@ void draw() {
     "\n(" + (mouseX / RES) + "," + (mouseY/ RES) + ")"+
     "\n(" + (cbx) + "," + (cby) + ")"
     , 10, 10);
-}
 
-void setMissedBiomes() {
-  for (int x = 0; x < MAP_WIDTH; x += 1) {
-    for (int y = 0; y < MAP_HEIGHT; y += 1) {
-      if (typeMap[x][y] != null && typeMap[x][y] == TYPES.INTERIOR) continue;
-      if (biomeMap[x][y] == -1) continue;
-      if (biomeMap[x][y] != 0) continue;
-
-      biomeMap[x][y] = base.id;
-    }
+  if (cbActive) {
+    stroke(255);
+    line(0, cby * RES, width, cby *RES);
   }
 }
 
-boolean cbActive = false;
-int cbx = -1;
-int cby = -1;
-int cbiterations = -1;
-int cbThreshhold = -1;
-boolean cbChangeSet = false;
 
 
-void SetBiomeCheck(int iterations, int threshhold, boolean changeSet) {
-  cbx = 0;
-  cby = 0;
-  cbiterations = iterations;
-  cbThreshhold = threshhold;
-  cbChangeSet = changeSet;
-  cbActive = true;
-}
 
-void checkBiomes() {
-  if (!cbActive) return;
-
-  for (int s = 0; s < MAP_WIDTH; s += 1) {
-    int x = cbx;
-    int y = cby;
-    cbx += 1;
-    if (cbx > MAP_WIDTH-1) {
-      cbx = 0;
-      cby += 1;
-      if (cby > MAP_HEIGHT-1) {
-        cby = 0;
-        cbiterations -= 1;
-        if (cbiterations < 0) {
-          cbActive = false;
-        }
-      }
-    }
-    //for (int i = 0; i < iterations; i += 1) {
-    //  for (int x = 0; x < MAP_WIDTH; x += 1) {
-    //    for (int y = 0; y < MAP_HEIGHT; y += 1) {
-
-    if (typeMap[x][y] != null && typeMap[x][y] == TYPES.INTERIOR) continue;
-    if (biomeMap[x][y] == -1) continue;
-    if (!cbChangeSet && biomeMap[x][y] != 0) continue;
-
-    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-    for (int xx = -1; xx <= 1; xx += 1) {
-      int xp = x + xx;
-      for (int yy = -1; yy <= 1; yy += 1) {
-        int yp = y + yy;
-        if (xp == x && yp == y) continue;
-        if (!OOB(xp, yp)) {
-          int v = biomeMap[xp][yp];
-
-          if (v > 0) {
-            if (map.containsKey(v)) {
-              map.put(v, map.get(v)+1);
-            } else {
-              map.put(v, 1);
-            }
-          }
-        }
-      }
-    }
-
-    int largest = -1;
-    int idOfLargest = -1;
-
-    for (int id : map.keySet()) {
-      int v = map.get(id);
-      if (v > largest) {
-        largest = v;
-        idOfLargest = id;
-      }
-    }
-
-    if (idOfLargest > 0 && largest > cbThreshhold) {
-
-      biomeMap[x][y] = idOfLargest;
-    }
-  }
-  //    }
-  //  }
-  //}
-}
 
 void keyReleased() {
   println(key);
