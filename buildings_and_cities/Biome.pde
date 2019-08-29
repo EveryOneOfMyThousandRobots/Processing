@@ -6,6 +6,7 @@ class Biome {
   ArrayList<IntPair> newNodes = new ArrayList<IntPair>();
   boolean ignoresStructures = false;
   boolean alive = true;
+  final boolean withStartLimit;
   final int id;
   {
     biome_id += 1;
@@ -17,12 +18,18 @@ class Biome {
   boolean first = true;
 
   int startX = -1, startY = -1;
-  Biome(color c, int x, int y) {
-    this(c);
+  int startW = -1, startH = -1;
+  Biome(color c, int x, int y, int w, int h) {
+    withStartLimit = true;
+    this.c = c;
     this.startX = x;
-    this.startY
+    this.startY = y;
+    this.startW = w;
+    this.startH = h;
+    lookup.put(id, this);
   }
   Biome(color c) {
+    withStartLimit = false;
     this.c = c;
     lookup.put(id, this);
     //cells = new boolean[width][height];
@@ -80,23 +87,35 @@ class Biome {
 
     return true;
   }
-  
+
   void swapLists() {
     toCheck = newNodes;
     newNodes = new ArrayList<IntPair>();
   }
-  
+
   void checkAlive() {
     if (toCheck.size() == 0) alive = false;
   }
 
   void update() {
     if (!alive) return;
-    
-    
-    
-    //println(toCheck.size());
+
+
+
     if (first) {
+      int xFrom = 0;
+      int xTo = MAP_WIDTH;
+      int yFrom = 0;
+      int yTo = MAP_HEIGHT;
+      
+      if (withStartLimit) {
+        xFrom = startX;
+        xTo = startX + startW;
+        yFrom = startY;
+        yTo = startY + startH;
+      }
+      
+
       boolean found = false;
       int attempts = 0;
       while (!found) {
@@ -105,8 +124,9 @@ class Biome {
           alive = false;
           return;
         }
-        int x = floor(random(MAP_WIDTH));
-        int y = floor(random(MAP_HEIGHT));
+        int x = floor(random(xFrom,xTo));
+        int y = floor(random(yFrom,yTo));
+        if (OOB(x,y)) continue;
         TYPES t = getType(x, y);
         if (t == null) {
           int v = biomeMap[x][y];

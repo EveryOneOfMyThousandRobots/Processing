@@ -1,4 +1,6 @@
 import java.util.HashSet;
+
+
 void fixBuildings() {
   HashSet<IntPair> toRemove = new HashSet<IntPair>();
 
