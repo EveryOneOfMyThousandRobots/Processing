@@ -10,6 +10,7 @@ enum TYPES {
 }
 
 boolean skipBiomes = false;
+boolean riverMode = false;
 
 PFont sysFont;
 
@@ -18,7 +19,7 @@ TYPES[][] displayMap;
 TYPES[][] typeMap;
 int[][] biomeMap;
 
-final int MAP_WIDTH = 200;
+final int MAP_WIDTH = 100;
 final int MAP_HEIGHT = MAP_WIDTH;
 int RES = 0;
 final int WINDOW_WIDTH = 800;
@@ -52,6 +53,8 @@ void setup() {
 }
 
 void reset() {
+  
+  
   cbReset();
   biomesChecked = false;
   buildings.clear();
@@ -67,6 +70,8 @@ void reset() {
   fixBuildings();
   erodeBuildings();
   addBiomes();
+  river = null;
+  riverMode = false;
   for (int x = 0; x < MAP_WIDTH; x += 1) {
     for (int y = 0; y < MAP_HEIGHT; y += 1) {
       TYPES t = displayMap[x][y];
@@ -144,6 +149,8 @@ void draw() {
           break;
         case 3:
           setMissedBiomes();
+        case 4:
+          riverMode = true;
         }
 
         //
@@ -158,10 +165,10 @@ void draw() {
   }
   //addBiomes();
   mapGraphics.updatePixels();
-  mapGraphics.stroke(255, 64);
-  for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
-    mapGraphics.line(x, 0, x, MAP_HEIGHT);
-  }
+  //mapGraphics.stroke(255, 64);
+  //for (int x = 0; x < MAP_WIDTH; x += BLOCK_WIDTH) {
+  //  mapGraphics.line(x, 0, x, MAP_HEIGHT);
+  //}
   
   //mapGraphics.stroke(255,64);
   //mapGraphics.fill(51,128);
@@ -169,10 +176,18 @@ void draw() {
   //  mapGraphics.rect(b.x, b.y, b.w, b.h);
   //}
 
-  for (int y = 0; y < MAP_HEIGHT; y += BLOCK_WIDTH) {
-    mapGraphics.line(0, y, MAP_WIDTH, y);
-  }
+  //for (int y = 0; y < MAP_HEIGHT; y += BLOCK_WIDTH) {
+  //  mapGraphics.line(0, y, MAP_WIDTH, y);
+  //}
 
+  if (river != null) {
+    river.update();
+    river.draw(mapGraphics);
+    
+  } else if (river == null && riverMode) {
+    makeRiver();
+    riverMode = false;
+  }
 
 
 
@@ -183,7 +198,8 @@ void draw() {
   image(mapGraphics, 0, 0, width, height);
   text("(" + mouseX + "," + mouseY + ")"+
     "\n(" + (mouseX / RES) + "," + (mouseY/ RES) + ")"+
-    "\n(" + (cbx) + "," + (cby) + ")"
+    "\n(" + (cbx) + "," + (cby) + ")" + 
+    "\n" + cbStep
     , 10, 10);
 
   if (cbActive) {

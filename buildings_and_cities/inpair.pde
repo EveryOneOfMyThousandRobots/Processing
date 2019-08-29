@@ -10,6 +10,11 @@ class IntPair {
   int hashCode() {
     return h.hashCode();
   }
+  
+  @Override
+  String toString() {
+    return "(" + x + "," + y + ")";
+  }
 
   @Override 
     boolean equals(Object o ) {

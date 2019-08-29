@@ -290,4 +290,5 @@ void setMissedBiomes() {
       biomeMap[x][y] = base.id;
     }
   }
+  cbStep += 1;
 }
