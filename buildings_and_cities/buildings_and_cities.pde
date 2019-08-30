@@ -19,7 +19,7 @@ TYPES[][] displayMap;
 TYPES[][] typeMap;
 int[][] biomeMap;
 
-final int MAP_WIDTH = 100;
+final int MAP_WIDTH = 400;
 final int MAP_HEIGHT = MAP_WIDTH;
 int RES = 0;
 final int WINDOW_WIDTH = 800;
