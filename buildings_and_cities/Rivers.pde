@@ -1,7 +1,9 @@
 void makeRiver() {
-  river = new River(floor(random(MAP_WIDTH)), 0, HALF_PI);
+  river = new River(floor(random(MAP_WIDTH/2)), 0, HALF_PI);
   river.init();
 }
+
+import java.util.Collections;
 
 River river;
 class River {
@@ -123,7 +125,7 @@ class River {
           continue;
         }
 
-        if (x == 0 || x == MAP_WIDTH-1 ) continue;
+        if (x == 0 || x == MAP_WIDTH-1 || y == 0) continue;
 
         float v = edges[x][y];
 
@@ -137,8 +139,10 @@ class River {
     if (neighbours.size() > 0) {
       IntPair lowest = null;
       float lowestValue = 0;
-
-      for (IntPair p : neighbours.keySet()) {
+      ArrayList<IntPair> keys = new ArrayList(neighbours.keySet());
+      
+      Collections.shuffle(keys);
+      for (IntPair p : keys) {
 
         float f = neighbours.get(p);
         //println(p.x +"," + p.y + ":" + f);
