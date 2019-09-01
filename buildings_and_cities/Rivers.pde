@@ -12,6 +12,9 @@ class River {
   int cX, cY;
   float angle;
   boolean done = false;
+  float w = 0;
+  float wa = 0;
+  float wai = 0;
 
   int[][] vKernel = {
     {-1, -2, -1}, 
@@ -196,7 +199,11 @@ class River {
       }
 
 
-
+      wa = noise(p.x*0.1, p.y*0.1) * TWO_PI;
+      
+      w = map(sin(wa), -1, 1, 1, 4);
+     
+      
 
       for (int j =i+1; j < i + 4 && j < path.size(); j += 1) {
         IntPair p2 = path.get(j);
@@ -208,7 +215,7 @@ class River {
         PVector dir_ro = dir_r.copy();
         dir_ro.mult(-1);
 
-        for (float t = 0.2; t < 2; t += 0.2) {
+        for (float t = 0.2; t < w; t += 0.2) {
 
           float x = pv2.x + (dir_r.x * t);
           float y = pv2.y + (dir_r.y * t);
@@ -220,7 +227,7 @@ class River {
 
           img.point(x, y);
         }
-        for (float t = 0.2; t < 2; t += 0.2) {
+        for (float t = 0.2; t < w; t += 0.2) {
           float x = pv2.x + (dir_ro.x * t);
           float y = pv2.y + (dir_ro.y * t);
           int xi = floor(x);
