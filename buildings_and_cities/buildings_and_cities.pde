@@ -53,7 +53,7 @@ void setup() {
 }
 
 void reset() {
-  
+  randomSeed(System.currentTimeMillis());
   
   cbReset();
   biomesChecked = false;
