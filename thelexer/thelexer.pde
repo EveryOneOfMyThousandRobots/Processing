@@ -10,7 +10,7 @@ boolean isDigitOrDot(char c) {
 final String ALLOWED_KEYS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .:=;/*-+_()<>{}[]@~'\"";
 
 boolean isKeyAllowed(char c) {
-    //println(ALLOWED_KEYS.indexOf(str(c).toUpperCase()));
+  //println(ALLOWED_KEYS.indexOf(str(c).toUpperCase()));
   return ALLOWED_KEYS.indexOf(str(c).toUpperCase()) >= 0;
 }
 final String DIGITS = "0123456789";
@@ -85,37 +85,43 @@ void keyReleased() {
     if (currentLine.toUpperCase().equals(">CLS")) {
       lines.clear();
     } else {
-      lines.add(currentLine);
-      if (currentLine.length() > 1) {
-        String cl = currentLine.substring(1, currentLine.length());
-        Lexer lexer = new Lexer("dummy",cl);
-
-        ArrayList<Token> tokens = lexer.makeTokens();
-        if (tokens != null) {
-          for (Token token : tokens) {
-            lines.add(token.toString());
-          }
-        } else if (lexer.error != null) {
-          lines.add(lexer.errorString());
-        }
-      }
+      run();
     }
     cursorPos = 1;
     currentLine = ">";
     break;
-  //case SHIFT:
-  //case ALT:
-  //case CONTROL:
-  //case UP:
-  //case DOWN:
-  //case LEFT:
-  //case RIGHT:
-  //  break;
+    //case SHIFT:
+    //case ALT:
+    //case CONTROL:
+    //case UP:
+    //case DOWN:
+    //case LEFT:
+    //case RIGHT:
+    //  break;
 
   default:
     if (isKeyAllowed(key)) {
       currentLine += str(key);
       cursorPos += 1;
+    }
+  }
+}
+
+void run() {
+  lines.add(currentLine);
+  if (currentLine.length() > 1) {
+    String cl = currentLine.substring(1, currentLine.length());
+    Lexer lexer = new Lexer("dummy", cl);
+
+    ArrayList<Token> tokens = lexer.makeTokens();
+    if (tokens != null) {
+      for (Token token : tokens) {
+        lines.add(token.toString());
+      }
+      Parser parser = new Parser(tokens);
+      lines.add(parser.parse().toString());
+    } else if (lexer.error != null) {
+      lines.add(lexer.errorString());
     }
   }
 }
