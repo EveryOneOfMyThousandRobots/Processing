@@ -29,6 +29,12 @@ class Unit {
         wander();
       }
       break;
+    case CHECK_JOBS:
+      {
+        
+      }
+   
+      break;
     case MOVING:
       if (path == null) {
         newState = UNIT_STATE.IDLE;
