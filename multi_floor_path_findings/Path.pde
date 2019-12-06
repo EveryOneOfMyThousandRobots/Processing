@@ -2,21 +2,24 @@
 
 import java.util.PriorityQueue;
 import java.util.Collections;
+import java.util.Queue;
+import java.util.LinkedList;
+
 
 void testPath() {
-  path = null;
-  pathStart = getRandomNode(null);
-  if (pathStart !=null) {
-    pathEnd = getRandomNode(pathStart);
-    if (pathEnd != null) {
-      path = new Path(pathStart, pathEnd);
-      if (path.findPath()) {
-        println("found path in " + nfc(path.time_taken, 6) + " sec");
-      } else {
-        println("could not find path!");
-      }
-    }
-  }
+  //path = null;
+  //pathStart = getRandomNode(null);
+  //if (pathStart !=null) {
+  //  pathEnd = getRandomNode(pathStart);
+  //  if (pathEnd != null) {
+  //    path = new Path(pathStart, pathEnd);
+  //    if (path.findPath()) {
+  //      println("found path in " + nfc(path.time_taken, 6) + " sec");
+  //    } else {
+  //      println("could not find path!");
+  //    }
+  //  }
+  //}
 }
 
 class PathNode implements Comparable<PathNode>{

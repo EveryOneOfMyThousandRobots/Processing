@@ -26,8 +26,10 @@ final int NODES_DOWN = 4;
 
 PFont font;
 
-ArrayList<Unit> units = new ArrayList<Unit>();
+UnitManager unitManager = new UnitManager();
 
+long TIME_NOW;
+long TIME_LAST;
 
 Tile selectedTile;
 enum STATE {
@@ -40,42 +42,18 @@ void settings() {
   size(VIEWPORT_W + (TILE_W * 2), VIEWPORT_H);
 }
 
-Node getRandomNode(Node notThisOne) {
-  Node n = null;
-  int attempts = 0;
-  while (n == null && attempts < 1000) {
-    attempts += 1;
-    int x = floor(random(0, TILES_ACROSS));
-    int y = floor(random(0, TILES_DOWN));
-
-    Tile t = getTileAtIndex(x, y);
-
-    if (t != null) {
-      n = t.getRandomNode();
-
-      if (n != null && notThisOne != null && n.equals(notThisOne)) {
-        n = null;
-      }
-    }
-  }
 
 
-  return n;
-}
 
-Node pathStart;
-Node pathEnd;
-Path path;
-long TIME_NOW;
-long TIME_LAST;
 //float time_delta = 0;
 
 void setup() {
   makeNodeMaps();
   font = createFont("Consolas", 10);
   textFont(font);
-  makeButton("buildRoom", "ROOM", 0, TILE_H*2);
-  makeButton("buildStairs", "STAIRS", 0, TILE_H*3);
+  gui = new ControlP5(this);
+  guiSetup();
+
   tiles = new Tile[TILES_ACROSS][TILES_DOWN];
   for (int x = 0; x < tiles.length; x += 1) {
     for (int y = 0; y < tiles[x].length; y += 1) {
@@ -111,14 +89,14 @@ void setup() {
   }
 
 
-  while (units.size() < 5) {
+  while (unitManager.units.size() < 5) {
     Node n = getRandomNode(null);
 
     if (n != null) {
-      units.add(new Unit(n));
+      unitManager.units.add(new Unit(n));
     }
   }
-  
+
   TIME_NOW = TIME_LAST = getTime();
 }
 
@@ -141,10 +119,8 @@ void draw() {
     }
   }
 
-  for (Unit unit : units) {
-    unit.update(time_delta);
-    unit.draw();
-  }
+  unitManager.UpdateAndDraw(time_delta);
+
 
   if (selectedTile != null) {
     selectedTile.drawSelected();
@@ -170,7 +146,7 @@ void draw() {
   //if (selectedTile != null) {
   //  text("selected: " + selectedTile.toString(), 10, 50);
   //}
-  text(nfc(time_delta,4),10,50);
+  text(nfc(time_delta, 4), 10, 50);
 
   //if (path != null) {
   //  if (path.path.size() > 0) {
@@ -186,8 +162,5 @@ void draw() {
   //  }
   //}
 
-  checkButtons();
-  for (Button button : buttons) {
-    button.draw();
-  }
+
 }

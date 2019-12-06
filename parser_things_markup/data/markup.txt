@@ -1,0 +1,14 @@
+{name}
+::{first_name}
+::{first_name} {last_name}
+::{title} {first_name} {last_name}
+{first_name}
+::amy
+::john
+::carol
+{last_name}
+::smith
+::hubbard
+{title}
+::mr
+::ms

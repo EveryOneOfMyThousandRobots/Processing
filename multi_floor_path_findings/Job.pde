@@ -47,6 +47,6 @@ boolean addJob(String action, Tile destination) {
   }
 
 
-  jobs.add(new Job(action, destination));
+  //jobs.add(new Job(action, destination));
   return true;
 }

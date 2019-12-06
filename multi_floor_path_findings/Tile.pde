@@ -6,13 +6,13 @@ enum TT {
     STAIRWELL
 }
 enum DIR {
-    DIR_UP, 
+  DIR_UP, 
     DIR_DOWN, 
     DIR_LEFT, 
-    DIR_RIGHT,
-    DIR_UPLEFT,
-    DIR_UPRGHT,
-    DIR_DNLEFT,
+    DIR_RIGHT, 
+    DIR_UPLEFT, 
+    DIR_UPRGHT, 
+    DIR_DNLEFT, 
     DIR_DNRGHT,
 }
 
@@ -25,11 +25,11 @@ void setTileNeighbours() {
       tile.setNeighbour(DIR.DIR_RIGHT, x+1, y);
       tile.setNeighbour(DIR.DIR_UP, x, y-1);
       tile.setNeighbour(DIR.DIR_DOWN, x, y+1);
-      
-      tile.setNeighbour(DIR.DIR_UPLEFT,x-1,y-1);
-      tile.setNeighbour(DIR.DIR_UPRGHT,x+1,y-1);
-      tile.setNeighbour(DIR.DIR_DNLEFT,x-1,y+1);
-      tile.setNeighbour(DIR.DIR_DNRGHT,x+1,y+1);
+
+      tile.setNeighbour(DIR.DIR_UPLEFT, x-1, y-1);
+      tile.setNeighbour(DIR.DIR_UPRGHT, x+1, y-1);
+      tile.setNeighbour(DIR.DIR_DNLEFT, x-1, y+1);
+      tile.setNeighbour(DIR.DIR_DNRGHT, x+1, y+1);
     }
   }
 }
@@ -45,9 +45,9 @@ class Tile {
   NodeMap nodeMap;
   ArrayList<Node> nodeList = new ArrayList<Node>();
   Node[][] nodes;
-  
+
   boolean hasJob = false;
-  
+
   //final int NODE_A;
   //final int NODE_D;
   Tile(int x, int y, TT type) {
@@ -59,6 +59,39 @@ class Tile {
     //NODE_A = nodeMap.map.length;
     //NODE_D = nodeMap.map[0].length;
     makeNodes();
+  }
+
+  boolean changeType(TT newType) {
+    boolean changed = false;
+    switch (newType) {
+    case DIRT:
+
+      break;
+    case GRASS:
+      break;
+    case SKY:
+      break;
+    case ROOM:
+      if (type == TT.DIRT) {
+        type = TT.ROOM;
+        changed = true;
+      }
+      break;
+    case STAIRWELL:
+      break;
+    }
+
+    if (changed) {
+      nodeMap = nodemaps.get(type);
+      makeNodes();
+      setNodeNeighbours();
+      for (Tile nt : neighbourList) {
+        nt.setNodeNeighbours();
+      }
+    }
+
+
+    return changed;
   }
 
   Node getRandomNode() {
@@ -154,34 +187,29 @@ class Tile {
         Node n = nodes[x][y];
         if (n != null) {
           String d = nodeMap.map[y * NODES_ACROSS + x];
-          if (In("L",d))
+          if (In("L", d))
             addNodeNeighbour(n, x-1, y);
 
-          if (In("R",d)) 
+          if (In("R", d)) 
             addNodeNeighbour(n, x+1, y);
 
-          if (In("U",d))
+          if (In("U", d))
             addNodeNeighbour(n, x, y-1);
-            
-          if (In("D",d)) 
+
+          if (In("D", d)) 
             addNodeNeighbour(n, x, y+1);
-            
-          if (In("1",d)) 
+
+          if (In("1", d)) 
             addNodeNeighbour(n, x-1, y-1);
-            
-          if (In("2",d)) 
-            addNodeNeighbour(n, x+1,y-1);
-            
-          if (In("3",d)) 
-            addNodeNeighbour(n, x+1,y+1);            
-            
-          if (In("4",d)) 
+
+          if (In("2", d)) 
+            addNodeNeighbour(n, x+1, y-1);
+
+          if (In("3", d)) 
+            addNodeNeighbour(n, x+1, y+1);            
+
+          if (In("4", d)) 
             addNodeNeighbour(n, x-1, y+1);
-            
-            
-            
-          
-          
         }
       }
     }
@@ -204,7 +232,7 @@ class Tile {
         } else if (x > NODES_ACROSS-1 && y > NODES_DOWN - 1) {
           nghbTile = getNeighbour(DIR.DIR_DNRGHT);
           xToCheck = 0;
-          yToCheck = 0;          
+          yToCheck = 0;
         } else if (x < 0              && y > NODES_DOWN - 1) {
           nghbTile = getNeighbour(DIR.DIR_DNLEFT);
           xToCheck = NODES_ACROSS-1;
@@ -212,7 +240,7 @@ class Tile {
         } else if (x > NODES_ACROSS-1 && y < 0) {
           nghbTile = getNeighbour(DIR.DIR_UPRGHT);
           xToCheck = 0;
-          yToCheck = NODES_DOWN-1;          
+          yToCheck = NODES_DOWN-1;
         } else if (x < 0) {
           nghbTile = getNeighbour(DIR.DIR_LEFT);
           xToCheck = NODES_ACROSS -1;
@@ -235,7 +263,7 @@ class Tile {
           neighbourToAdd = nghbTile.getLocalNodeAt(xToCheck, yToCheck);
         }
       }
-      if (neighbourToAdd != null) {
+      if (neighbourToAdd != null&& !n.neighbours.contains(neighbourToAdd)) {
         n.neighbours.add(neighbourToAdd);
       }
     }
@@ -256,7 +284,7 @@ class Tile {
 
 
   void drawSelected() {
-    this.draw();
+    //this.draw();
     noFill();
     strokeWeight(3);
     stroke(255);
@@ -286,10 +314,10 @@ class Tile {
       break;
     }
     rect(pos.x - playXOffset + GUI_W, pos.y - playYOffset, TILE_W, TILE_H);
-    
+
     if (hasJob) {
-      stroke(255,128);
-      fill(255,128);
+      stroke(255, 128);
+      fill(255, 128);
       ellipse(pos.x - playXOffset + ( TILE_W / 2), pos.y - playYOffset + (TILE_H / 2), (TILE_H / 2), (TILE_H/2));
     }
 

@@ -176,3 +176,26 @@ class NodeMap {
 
 class Edge {
 }
+
+Node getRandomNode(Node notThisOne) {
+  Node n = null;
+  int attempts = 0;
+  while (n == null && attempts < 1000) {
+    attempts += 1;
+    int x = floor(random(0, TILES_ACROSS));
+    int y = floor(random(0, TILES_DOWN));
+
+    Tile t = getTileAtIndex(x, y);
+
+    if (t != null) {
+      n = t.getRandomNode();
+
+      if (n != null && notThisOne != null && n.equals(notThisOne)) {
+        n = null;
+      }
+    }
+  }
+
+
+  return n;
+}

@@ -1,9 +1,25 @@
 import java.util.HashSet;
 enum UNIT_STATE {
-    IDLE, 
+  IDLE, 
     MOVING, 
     CHECK_JOBS,
 }
+
+class UnitManager {
+  HashMap<String, Integer> roles = new HashMap<String, Integer>();
+
+  ArrayList<Unit> units = new ArrayList<Unit>();
+
+  void UpdateAndDraw(float time_delta) {
+    for (Unit unit : units) {
+      unit.update(time_delta);
+      unit.draw();
+    }
+  }
+  
+  
+}
+
 class Unit {
   Node nodePosition;
   Node nodeTarget;
@@ -31,9 +47,8 @@ class Unit {
       break;
     case CHECK_JOBS:
       {
-        
       }
-   
+
       break;
     case MOVING:
       if (path == null) {
