@@ -10,16 +10,21 @@ void settings() {
   img = loadImage("candi.png");
   size(img.width, img.height);
 }
-String[] prepre = {"a_", "b_", "c_", "d_"};
+String[] prepre = {"a_", "b_"};
 void setup() {
-  randomSeed(555);
+  randomSeed(1234);
+  noiseSeed(4564);
   gr = createGraphics(width, height);
   gr.beginDraw();
   gr.image(img, 0, 0);
   gr.endDraw();
 
   noiseImg = createGraphics(width, height);
-  String[] prefixes = {"r_", "g_", "b_", "a_"};
+  String[] prefixes = {"*_", "r_", "g_", "b_", "a_"};
+
+  for (int c = 0; c < 255; c += 5) {
+    println(c + " = " + cr(c));
+  }
 
 
   for (String pp : prepre) {
@@ -48,9 +53,9 @@ void drawNoiseBg() {
       float n0 = noise((float)x * 0.01, (float)y * 0.01, 1 + (0.1 * (float)frame / (float)TOTAL_FRAMES));
       float n1 = noise((float)x * 0.01, (float)y * 0.01, 2 + (0.1 * (float)frame / (float)TOTAL_FRAMES));
       float n2 = noise((float)x * 0.01, (float)y * 0.01, 3 + (0.1 * (float)frame / (float)TOTAL_FRAMES));
-      
+
       float n = (n0 + n1 + n2) % 1;
-      
+
       color c = n < 0.5 ? color(200, 0) : color(200, 255);
 
       for (int xx = 0; xx < NOISE_STEP; xx += 1) {
@@ -84,12 +89,14 @@ void draw() {
     proc(pp, COL_MODE.COL_RED);
     proc(pp, COL_MODE.COL_GREEN);
     proc(pp, COL_MODE.COL_BLUE);
-    proc(pp, COL_MODE.COL_ALPHA);
+   // proc(pp, COL_MODE.COL_ALL);
   }
+  proc("a_", COL_MODE.COL_ALPHA);
 
   noiseImg.endDraw();
 
   //image(noiseImg, 0,0);
+  colourReduce(gr);
   image(gr, 0, 0);
 
   if (frame >= TOTAL_FRAMES) {

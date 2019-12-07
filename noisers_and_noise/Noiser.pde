@@ -2,42 +2,56 @@ final float MIN_RAD = 0.01;
 final float MAX_RAD = 0.03;
 float snap = 100;
 
-class Noiser {
+class NoiseComponent {
+  float xc, yc;
+  float a, r;
+  float x, y, z;
+  float v;
+  float as;
 
-  float xc0, yc0, xc1, yc1;
-
-  float a0, a1;
-  float r0, r1;
-  float as0, as1;
-  float x0, y0, z0, x1, y1, z1;
-  float v = 0;
-
-  Noiser() {
-    xc0 = random(0, 10);
-    yc0 = random(0, 10);
-
-    xc1 = random(0, 10);
-    yc1 = random(0, 10);
-
-    z0 = random(0, 10);
-    z1 = random(0, 10);
-    r0 = random(MIN_RAD, MAX_RAD);
-    r1 = r0 + random(MIN_RAD, MAX_RAD);
-    as0 = random(TWO_PI);
-    as1 = random(TWO_PI);
+  NoiseComponent() {
+    xc = random(0, 10);
+    yc = random(0, 10);
+    z = random(0, 10);
+    r = random(MIN_RAD, MAX_RAD);
+    as = random(TWO_PI);
+    
   }
 
   void update() {
+
     float amt = (float)frame / (float) TOTAL_FRAMES;
-    a0 = as0 + (TWO_PI * amt);
-    a1 = as1 + (TWO_PI * amt);
-    x0 = xc0 + r0 * cos(a0);
-    y0 = yc0 + r0 * sin(a0);
+    a = as + (TWO_PI * amt);
+
+    x = xc + r * cos(a);
+    y = yc + r * sin(a);
+
+
+
+    v = noise(x, y, z);
     
-    x1 = xc1 + r1 * cos(a1);
-    y1 = yc1 + r1 * sin(a1);
+  }
+}
+
+class Noiser {
+  float v = 0;
+  NoiseComponent[] components;
+
+  Noiser(int numComponents) {
+    components = new NoiseComponent[numComponents];
     
-    v = noise(x0, y0, z0) + noise(x1,y1,z1);
+    for (int i = 0; i < components.length; i += 1) {
+      components[i] = new NoiseComponent();
+    }
+
+  }
+
+  void update() {
+    v = 0;
+    for (NoiseComponent n : components) {
+      n.update();
+      v += n.v;
+    }
     v %= 1.0;
 
 
