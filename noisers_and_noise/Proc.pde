@@ -2,7 +2,8 @@ enum COL_MODE {
   COL_RED, 
     COL_GREEN, 
     COL_BLUE, 
-    COL_ALPHA
+    COL_ALPHA,
+    COL_ALL
 }
 
 final int MIN_HEIGHT = 30;
@@ -11,6 +12,9 @@ void proc(String pp, COL_MODE mode) {
 
   String prefix = null;
   switch (mode) {
+  case COL_ALL:
+    prefix = "*_";
+    break;
   case COL_RED:
     prefix = "r_";
     break;

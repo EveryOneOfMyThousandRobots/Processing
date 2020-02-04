@@ -1,5 +1,7 @@
 int getColour(int colour, COL_MODE mode) {
   switch (mode) {
+  case COL_ALL:
+    return colour;
   case COL_RED:
     return colour & 0x00ff0000;
 
@@ -19,6 +21,8 @@ int getColour(int colour, COL_MODE mode) {
 
 int overwriteChannel(int A, int B, COL_MODE mode) {
   switch (mode) {
+  case COL_ALL:
+    return B;
   case COL_RED:
     return (A & 0xff00ffff) + getColour(B, mode);
 

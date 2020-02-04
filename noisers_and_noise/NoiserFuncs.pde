@@ -1,11 +1,11 @@
 HashMap<String, Noiser> noisers = new HashMap<String, Noiser>();
-
+final int NUM_COMPONENTS = 10;
 Noiser noiseMake(String name) {
   
   if (noisers.containsKey(name)) {
     return noisers.get(name);
   } else {
-    Noiser n = new Noiser();
+    Noiser n = new Noiser(NUM_COMPONENTS);
     noisers.put(name, n);
     return n;
   }
@@ -15,7 +15,7 @@ Noiser noiseGet(String name) {
   if (noisers.containsKey(name)) {
     return noisers.get(name);
   } else {
-    Noiser n = new Noiser();
+    Noiser n = new Noiser(NUM_COMPONENTS);
     noisers.put(name, n);
     return n;
   }
