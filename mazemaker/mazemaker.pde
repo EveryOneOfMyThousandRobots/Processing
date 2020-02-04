@@ -1,5 +1,5 @@
 int COLS, ROWS;
-int SIZE = 40;
+int SIZE = 20;
 import java.util.Stack;
 
 Stack<Cell> stack = new Stack<Cell>();
