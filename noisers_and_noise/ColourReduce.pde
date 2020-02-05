@@ -25,7 +25,7 @@ void colourReduce(PGraphics gr) {
 }
 
 
-final float NUM_COLOURS = 8;
+final float NUM_COLOURS = 2;
 
 
 int cr(int c) {

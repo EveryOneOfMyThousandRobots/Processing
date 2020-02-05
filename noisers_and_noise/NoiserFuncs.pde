@@ -47,9 +47,7 @@ float noiseValue(String name, float vFrom, float vTo) {
 
 
 float noiseValue(String name) {
-  if (noisers.containsKey(name)) {
-    return noisers.get(name).v;
-  } else {
-    return 0;
-  }
+  Noiser n = noiseGet(name);
+  return n.v;
+  
 }

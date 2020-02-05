@@ -5,15 +5,18 @@ PGraphics gr;
 PGraphics noiseImg;
 int frame = 0;
 boolean record = false;
+PFont font;
 final int TOTAL_FRAMES = 60;
 void settings() {
   img = loadImage("candi.png");
   size(img.width, img.height);
 }
-String[] prepre = {"a_", "b_"};
+String[] prepre = {"a_", "b_", "c_"};
 void setup() {
-  randomSeed(1234);
-  noiseSeed(4564);
+  font = createFont("Nouveau IBM", 12);
+  textFont(font);
+  //randomSeed(12384);
+  //noiseSeed(46564);
   gr = createGraphics(width, height);
   gr.beginDraw();
   gr.image(img, 0, 0);
@@ -87,11 +90,13 @@ void draw() {
   noiseImg.loadPixels();
   for (String pp : prepre) {
     proc(pp, COL_MODE.COL_RED);
-    proc(pp, COL_MODE.COL_GREEN);
+    //proc(pp, COL_MODE.COL_GREEN);
     proc(pp, COL_MODE.COL_BLUE);
-   // proc(pp, COL_MODE.COL_ALL);
+    //proc(pp, COL_MODE.COL_ALL);
+    proc2(pp);
   }
-  proc("a_", COL_MODE.COL_ALPHA);
+  //proc("a_", COL_MODE.COL_ALPHA);
+
 
   noiseImg.endDraw();
 
@@ -107,4 +112,7 @@ void draw() {
   }
   if (record)
     saveFrame("out/img####.jpg");
+
+  fill(255);
+  text(frame, 10, 10);
 }
