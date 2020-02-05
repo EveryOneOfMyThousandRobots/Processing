@@ -137,7 +137,7 @@ class Movie {
   void draw() {
     if (state.equals("DISPLAY_STEP")) {
       if (processFrameIndex >= 0 && processFrameIndex <= frames.length - 1) {
-        println(frames.length);
+        //println(frames.length);
         image(frames[processFrameIndex], 0, 0, width, height);
       }
     } 
@@ -209,7 +209,7 @@ class Movie {
     if (saveoutput) {
       SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
       String dt = sdf.format(new Date());
-      println(dt);
+     // println(dt);
       outputFolder = sketchPath() + "\\data\\" + dt;
       File f = new File(outputFolder);
       f.mkdir();
@@ -232,7 +232,7 @@ class Movie {
     if (saveoutput) {
       try {
         String c = "cmd /c ffmpeg -framerate " + FPS + " -i img%05d.jpg -c:v mpeg4 -vf scale=1280:720:flags=neighbor -sws_dither none " + outputFolder + "\\out.mp4";
-        println("\n" + c + "\n");
+        //println("\n" + c + "\n");
         Runtime.getRuntime().exec(c, null, new File(outputFolder));
       } 
       catch (Exception e) {

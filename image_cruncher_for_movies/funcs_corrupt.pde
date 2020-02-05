@@ -9,12 +9,12 @@
     PGraphics ng = createGraphics(input.width, input.height);
     ng.beginDraw();
     ng.loadPixels();
-    int offset_2 = nse.snap(name + "_OFFSET2_CPT", frame, 1, input.width, input.width / 4);
+    int offset_2 = nse.snap(name + "_OFFSET2_CPT", frame, 1, input.width, input.width / 16);
     for (int i = 0; i < input.pixels.length; i += 1) {
       timer += 1;
 
       if (timer >= offset_timer) {
-        offset_2 = nse.snap(name + "_OFFSET2_CPT", i+frame, 1, input.width, input.width / 4);
+        offset_2 = nse.snap(name + "_OFFSET2_CPT", i+frame, 1, input.width, input.width / 16);
         timer = 0;
       }
 

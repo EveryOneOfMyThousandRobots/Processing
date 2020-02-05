@@ -72,6 +72,14 @@ class FrameSet {
       case "MOVE_ALL":
         move(nse, g, COL.ALL, name+"ma"+j, frameNumber);
         break;
+      case "VHS":
+        g.image(vignette, 0, 0);
+        g.fill(0);
+        g.noStroke();      
+        VHS("abc", g, frameNumber + startFrame);
+        VHS("def", g, frameNumber + startFrame);
+        VHS("ghi", g, frameNumber + startFrame);
+
       default:
       }
     }
@@ -82,9 +90,7 @@ class FrameSet {
 
 
 
-    g.image(vignette, 0, 0);
-    g.fill(0);
-    g.noStroke();
+
     int h_6 = g.height / 6;
     g.rect(0, 0, g.width, h_6);
     g.rect(0, g.height - h_6, g.width, h_6);
@@ -127,6 +133,7 @@ class FrameSet {
       }
     }
     Collections.shuffle(setEffects);
+    setEffects.add("VHS");
   }
 
   void drawText(PGraphics input, String text, float x, float y, boolean bg) {

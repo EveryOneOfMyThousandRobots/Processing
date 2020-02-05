@@ -68,6 +68,11 @@ void setup() {
   dither(nm, vignette, "hello", 1);
   vignette.endDraw();
 
+  NoiseManager testnm = new NoiseManager();
+  for (int i = 0; i < 25; i += 1) {
+    println(testnm.snap("hello",i,0,200,50));
+  }
+    
 
   m = new Movie(12, 20, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT, false);
   println(m.toString());

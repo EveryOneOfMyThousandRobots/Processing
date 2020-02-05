@@ -32,11 +32,11 @@ class NoiseManager {
 
   float snapNoise(String name, int i, float min, float max, float snap) {
     float f = getNoise(name, i, min, max);
-    float CF = (max-min) / snap;
+   
 
 
-    f = ceil(f / CF);
-    f *= CF;
+    f = (int)(f / snap);
+    f *= snap;
     return f;
   }
 
