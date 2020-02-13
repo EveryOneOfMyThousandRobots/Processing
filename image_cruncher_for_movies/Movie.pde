@@ -16,6 +16,12 @@ class Movie {
   int frameSetIndex = -1;
   String state = "";
   String nextState = "BEGIN";
+  
+  boolean oneSet = false;
+  boolean renderOverlayText = true;
+  boolean renderVHS = true;
+  int minNumEffects = 1;
+  int maxNumEffects = 10;
 
   int framesRemaining = -1;
   //timing
@@ -71,21 +77,21 @@ class Movie {
       break;
     case "MAKE_SET_FRAMES_BEGIN":
       processFrameIndex = -1;
-      
-    
+
+
       nextState = "MAKE_SET_FRAMES_STEP";
-      
+
       break;
     case "MAKE_SET_FRAMES_STEP":
       processFrameIndex += 1;
       FrameSet set = sets.get(frameSetIndex);
-      
+
       set.generateOneFrame(processFrameIndex);
-      
+
       if (processFrameIndex >= set.numFrames-1) {
         nextState = "MAKE_SET_FRAMES_FINISH";
       }
-      
+
       break;
     case "MAKE_SET_FRAMES_FINISH":
       nextState = "MAKE_SETS_STEP"; 
@@ -163,15 +169,22 @@ class Movie {
     float totalFrames = lenFrames;
     float frame = (totalFrames - framesRemaining);
 
-    float t = 1 - pow(frame / totalFrames, 3);
-    int ff = ceil(2.0 + ((float)FPS * t));
-
-    if (ff > framesRemaining) {
-      ff = framesRemaining;
+    int ff = 0;
+    if (oneSet) {
+      ff = lenFrames;
       framesRemaining = 0;
     } else {
-      framesRemaining -= ff;
-    }
+      float t = 1 - pow(frame / totalFrames, 3);
+      ff = ceil(2.0 + ((float)FPS * t));
+
+      if (ff > framesRemaining) {
+        ff = framesRemaining;
+        framesRemaining = 0;
+      } else {
+        framesRemaining -= ff;
+      }
+    } 
+    
 
     int r = floor(random(files.size()));
     String s = files.get(r);
@@ -191,7 +204,8 @@ class Movie {
     frames = new PImage[this.lenFrames];
     TEXT_Y = ibmFont.getSize()+ (targetHeight / 6);
 
-    String path = "C:\\Users\\sam.PROPER\\Pictures\\Movie stills";
+    //String path = "C:\\Users\\sam.PROPER\\Pictures\\Movie stills";
+    String path = "S:\\photos";
     File[] fls = (new File(path)).listFiles();
     for (File f : fls) {
 
@@ -209,7 +223,7 @@ class Movie {
     if (saveoutput) {
       SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
       String dt = sdf.format(new Date());
-     // println(dt);
+      // println(dt);
       outputFolder = sketchPath() + "\\data\\" + dt;
       File f = new File(outputFolder);
       f.mkdir();
@@ -218,12 +232,12 @@ class Movie {
 
   void saveOutput() {
     if (saveoutput) {
-      processFrameIndex += 1;
+      //processFrameIndex += 1;
 
 
       PImage img = frames[processFrameIndex];
-      String s = "00000" + processFrameIndex;
-      s = s.substring(s.length()-5);
+      String s = "000" + processFrameIndex;
+      s = s.substring(s.length()-3);
       img.save(outputFolder + "\\img" + s +".jpg");
     }
   }
@@ -231,7 +245,7 @@ class Movie {
   void convertOutput() {
     if (saveoutput) {
       try {
-        String c = "cmd /c ffmpeg -framerate " + FPS + " -i img%05d.jpg -c:v mpeg4 -vf scale=1280:720:flags=neighbor -sws_dither none " + outputFolder + "\\out.mp4";
+        String c = "cmd /c ffmpeg -framerate " + FPS + " -i img%03d.jpg -c:v mpeg4 -vf scale=1280:720:flags=neighbor -sws_dither none " + outputFolder + "\\out.mp4";
         //println("\n" + c + "\n");
         Runtime.getRuntime().exec(c, null, new File(outputFolder));
       } 

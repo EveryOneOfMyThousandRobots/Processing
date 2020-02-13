@@ -1,20 +1,20 @@
   void corruptDims(NoiseManager nse, PGraphics input, String name, int frame) {
 
     input.loadPixels();
-    int offset = nse.snap(name + "_OFFSET_CPT", frame, 1, input.pixels.length, 30);
+    int offset = nse.snap(name + "_OFFSET_CPT", frame, 0, input.width/2, input.width / 16);
     //int yo = floor(nse.snapNoise(name + "_YO_CPT", frame, -4.0f, 4.0f, 1.0f));
 
-    int offset_timer = nse.snap(name + "_OFFSET_TIMER", frame, input.width*4, input.width*input.height, 5);
+    int offset_timer = nse.snap(name + "_OFFSET_TIMER", frame, input.pixels.length / 2, input.pixels.length, input.width) + input.width;
     int timer = 0;
     PGraphics ng = createGraphics(input.width, input.height);
     ng.beginDraw();
     ng.loadPixels();
-    int offset_2 = nse.snap(name + "_OFFSET2_CPT", frame, 1, input.width, input.width / 16);
+    int offset_2 = nse.snap(name + "_OFFSET2_CPT", frame, 0, input.width/2, input.width / 16);
     for (int i = 0; i < input.pixels.length; i += 1) {
       timer += 1;
 
       if (timer >= offset_timer) {
-        offset_2 = nse.snap(name + "_OFFSET2_CPT", i+frame, 1, input.width, input.width / 16);
+        offset_2 = nse.snap(name + "_OFFSET2_CPT", i+frame, 0, input.width/2, input.width / 8);
         timer = 0;
       }
 

@@ -3,6 +3,7 @@ enum COL {
 }
 
 String[] effects = {"PIXELATE", "REPLACE", "DITHER", "CORRUPT", "MOVE_R", "MOVE_G", "MOVE_B", "MOVE_ALL", "MESS"};
+//String[] effects = {"CORRUPT"};
 
 final int TEXT_X = 20;
 int TEXT_Y = 30;
@@ -76,9 +77,11 @@ class FrameSet {
         g.image(vignette, 0, 0);
         g.fill(0);
         g.noStroke();      
-        VHS("abc", g, frameNumber + startFrame);
-        VHS("def", g, frameNumber + startFrame);
-        VHS("ghi", g, frameNumber + startFrame);
+        if (movie.renderVHS) {
+          VHS("abc", g, frameNumber + startFrame);
+          VHS("def", g, frameNumber + startFrame);
+          VHS("ghi", g, frameNumber + startFrame);
+        }
 
       default:
       }
@@ -87,26 +90,24 @@ class FrameSet {
 
 
 
-
-
-
-
     int h_6 = g.height / 6;
     g.rect(0, 0, g.width, h_6);
     g.rect(0, g.height - h_6, g.width, h_6);
 
-    float amt = 1-(float)(frameNumber+startFrame) / (float)movie.lenFrames;
-    amt /= 2;
+
+    if (movie.renderOverlayText) {
+
+
+      float amt = 1-(float)(frameNumber+startFrame) / (float)movie.lenFrames;
+      amt /= 2;
 
 
 
-    drawText(g, corruptString(VID_TEXT3, amt), TEXT_X, TEXT_Y+60, true);
-    drawText(g, corruptString(VID_TEXT2, amt), TEXT_X, TEXT_Y+40, true);
-    drawText(g, corruptString(VID_TEXT1, amt), TEXT_X, TEXT_Y+20, true);
-    drawText(g, corruptString(VID_TEXT0, amt), TEXT_X, TEXT_Y, true);
-
-
-
+      drawText(g, corruptString(VID_TEXT3, amt), TEXT_X, TEXT_Y+60, true);
+      drawText(g, corruptString(VID_TEXT2, amt), TEXT_X, TEXT_Y+40, true);
+      drawText(g, corruptString(VID_TEXT1, amt), TEXT_X, TEXT_Y+20, true);
+      drawText(g, corruptString(VID_TEXT0, amt), TEXT_X, TEXT_Y, true);
+    }
 
 
     g.endDraw();
@@ -121,7 +122,7 @@ class FrameSet {
 
 
 
-    int n = floor(random(3, 8));
+    int n = floor(random(movie.minNumEffects, movie.maxNumEffects));
 
     while (setEffects.size() < n) {
       int nn = floor(random(effects.length));

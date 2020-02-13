@@ -74,7 +74,11 @@ void setup() {
   }
     
 
-  m = new Movie(12, 20, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT, false);
+  m = new Movie(18, 5, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT, false);
+  m.oneSet = true;
+  m.renderOverlayText = false;
+  m.maxNumEffects = 5;
+  m.renderVHS = true;
   println(m.toString());
 }
 
