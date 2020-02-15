@@ -1,3 +1,47 @@
+//----------------------CORRUPT DIMS----------------------------------------
+
+void corruptDims(NoiseManager nse, PGraphics input, String name, int frame) {
+
+  input.loadPixels();
+  int offset = nse.snap(name + "_OFFSET_CPT", frame, 0, input.width/2, input.width / 16);
+  //int yo = floor(nse.snapNoise(name + "_YO_CPT", frame, -4.0f, 4.0f, 1.0f));
+
+  int offset_timer = nse.snap(name + "_OFFSET_TIMER", frame, input.pixels.length / 2, input.pixels.length, input.width) + input.width;
+  int timer = 0;
+  PGraphics ng = createGraphics(input.width, input.height);
+  ng.beginDraw();
+  ng.loadPixels();
+  int offset_2 = nse.snap(name + "_OFFSET2_CPT", frame, 0, input.width/2, input.width / 16);
+  for (int i = 0; i < input.pixels.length; i += 1) {
+    timer += 1;
+
+    if (timer >= offset_timer) {
+      offset_2 = nse.snap(name + "_OFFSET2_CPT", i+frame, 0, input.width/2, input.width / 8);
+      timer = 0;
+    }
+
+    int j = (i+offset+offset_2) % input.pixels.length;
+
+    ng.pixels[i] = input.pixels[j];
+  }
+  //int nw = input.width + floor(random(-2,2));
+
+
+  //for (int y = 0; y < ng.height; y += 1) {
+  //  for (int x = 0; x < ng.width; x += 1) {
+  //    int i = (y * nw + x) % input.pixels.length;
+
+  //    ng.pixels[i] = input.pixels[y * ng.width + x];
+
+
+  //  }
+  //}
+  ng.updatePixels();
+  ng.endDraw();
+  input.image(ng, 0, 0);
+}
+
+//----------------------PIXELATE----------------------------------------
 void pixelate(NoiseManager nse, PGraphics input, String name, int frame) {
   final int CELLSIZE = nse.snap(name, frame, 2, 8, 2);
 
@@ -221,10 +265,10 @@ void Mess(NoiseManager nse, PGraphics input, String name, int frame) {
   float b_r = nse.getNoise(name + "_b_r", frame);
   float c_r = nse.getNoise(name + "_c_r", frame);
   float d_r = nse.getNoise(name + "_d_r", frame);
-  int a_num = nse.snap(name + "_a_snap",frame,2,8,2);
-  int b_num = nse.snap(name + "_a_snap",frame,2,8,2);
-  int c_num = nse.snap(name + "_a_snap",frame,2,8,2);
-  int d_num = nse.snap(name + "_a_snap",frame,2,8,2);
+  int a_num = nse.snap(name + "_a_snap", frame, 2, 8, 2);
+  int b_num = nse.snap(name + "_a_snap", frame, 2, 8, 2);
+  int c_num = nse.snap(name + "_a_snap", frame, 2, 8, 2);
+  int d_num = nse.snap(name + "_a_snap", frame, 2, 8, 2);
 
   float a_b = nse.getNoise(name + "_a_b", frame);
   float b_b = nse.getNoise(name + "_b_b", frame);
@@ -238,7 +282,7 @@ void Mess(NoiseManager nse, PGraphics input, String name, int frame) {
 
   for (int y = 0; y < input.height; y += 1) {
     for (int x = 0; x < input.width; x += 1) {
-      
+
       int xs = floor((float)x / 4.0);
 
       int c = input.pixels[y * input.width + x];
