@@ -20,10 +20,12 @@ void controlEvent(CallbackEvent evt) {
     } else {
       switch(cName) {
       case "BTN_C_LOAD_IMAGE":
-        base = loadImage("shining.jpg");
+        base = loadImage(getImageFile());
         break;
       case "BTN_C_RESET":
         base = null;
+        output = null;
+        frames = null;
         listEffectChain.clear();
         break;
       case "BTN_C_PROCESS":

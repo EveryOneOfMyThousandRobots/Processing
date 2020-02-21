@@ -1,9 +1,21 @@
 PImage base = null;
 PGraphics output = null;
-String[] effects = {"BTN_FX_PIXELATE", "BTN_FX_REPLACE", "BTN_FX_DITHER", "BTN_FX_CORRUPT", "BTN_FX_MOVE_R", "BTN_FX_MOVE_G", "BTN_FX_MOVE_B", "BTN_FX_MOVE_ALL", "BTN_FX_MESS", "BTN_FX_VHS"};
-String[] effects_labels = {"PIXELATE", "REPLACE", "DITHER", "CORRUPT", "MOVE_R", "MOVE_G", "MOVE_B", "MOVE_ALL", "MESS", "VHS"};
+PGraphics[] frames = null;
+int frameIndex = -1;
+String[] effects = {"BTN_FX_PIXELATE", "BTN_FX_REPLACE", "BTN_FX_DITHER", "BTN_FX_CORRUPT", "BTN_FX_MOVE_R", "BTN_FX_MOVE_G", "BTN_FX_MOVE_B", "BTN_FX_MOVE_ALL", "BTN_FX_MESS", "BTN_FX_VHS", "BTN_FX_EDGE"};
+String[] effects_labels = {"PIXELATE", "REPLACE", "DITHER", "CORRUPT", "MOVE_R", "MOVE_G", "MOVE_B", "MOVE_ALL", "MESS", "VHS", "EDGE"};
 
 import controlP5.*;
+final String IMAGE_PATH = "S:\\PHOTOS";
+
+long dt_last = getTime();
+long dt_now = getTime();
+long dt = 0;
+
+float fps_counter = 0;
+final float FPS = 18;
+final float MS_PER_FRAME = 1000.0 / FPS;
+
 
 ArrayList<Button> buttons = new ArrayList<Button>();
 ScrollableList listEffectChain;
@@ -15,6 +27,13 @@ enum COL {
 }
 CallbackListener cbl;
 Textarea info;
+
+
+//---------------------------- CONTROLS VARIABLES
+
+float sld_pixelate_min = 4;
+float sld_pixelate_max = 16;
+
 void setup() {
   size(800, 600);
 
@@ -34,7 +53,7 @@ void setup() {
 
   cntrl = new ControlP5(this);
   grpEffects = cntrl.addGroup("effects").setPosition(0, 18).setLabel("EFFECTS").setWidth(width).setHeight(15).setBackgroundColor(color(51)).setBackgroundHeight(20);
-  grpControls = cntrl.addGroup("controls").setPosition(120, 68).setLabel("CONTROLS").setWidth(width-120).setHeight(15).setBackgroundColor(color(51)).setBackgroundHeight(100);
+  grpControls = cntrl.addGroup("controls").setPosition(120, 68).setLabel("CONTROLS").setWidth(width-120).setHeight(15).setBackgroundColor(color(51, 64)).setBackgroundHeight(100);
 
   cntrl.addButton("BTN_C_LOAD_IMAGE").setLabel("load image").setPosition(0, 0).setGroup(grpControls);
   cntrl.addButton("BTN_C_PROCESS").setLabel("process").setPosition(80, 0).setGroup(grpControls);
@@ -45,7 +64,13 @@ void setup() {
   //listEffectChain.setLock(true);
   info = cntrl.addTextarea("Hello").setPosition(0, height/2);
 
+  cntrl.addSlider("sld_pixelate_min").setGroup(grpControls).setPosition(0, 60).setWidth(grpControls.getWidth()/3).setLabel("pix min").setMin(1).setMax(32).setDecimalPrecision(0).setDefaultValue(4);
+  cntrl.getController("sld_pixelate_min").getValueLabel().align(ControlP5.RIGHT, ControlP5.RIGHT);
+  cntrl.addSlider("sld_pixelate_max").setGroup(grpControls).setPosition(0, 70).setWidth(grpControls.getWidth()/3).setLabel("pix max").setMin(1).setMax(32).setDecimalPrecision(0).setDefaultValue(16);
+  cntrl.getController("sld_pixelate_max").getValueLabel().align(ControlP5.RIGHT, ControlP5.RIGHT);
+
   grpEffects.disableCollapse();
+  grpControls.disableCollapse();
   //cbl = new CallbackListener() {
   //  public void controlEvent(CallbackEvent theEvent) {
   //    switch(theEvent.getAction()) {
@@ -79,7 +104,27 @@ void setup() {
 
 
 void draw() {
+
+  dt_now = getTime();
+  dt = dt_now - dt_last;
+  dt_last = dt_now;
+
+  fps_counter += dt;
+  if (fps_counter >= MS_PER_FRAME) {
+    fps_counter %= MS_PER_FRAME;
+    if (frames != null) {
+      frameIndex += 1;
+      if (frameIndex > frames.length-1) {
+        frameIndex = 0;
+      }
+
+      output = frames[frameIndex];
+    }
+  }
+
+
   background(0);
+
   if (output != null) {
     image(output, 0, 0, width, height);
     fill(255);

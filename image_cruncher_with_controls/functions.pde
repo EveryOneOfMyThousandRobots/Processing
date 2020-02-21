@@ -1,3 +1,97 @@
+//time funcs
+
+long getTime() {
+  return (long)(System.nanoTime() / 1e6);
+}
+
+//files functions
+
+String getImageFile() {
+  File path = new File(IMAGE_PATH);
+
+
+  if (path.isDirectory()) {
+    String[] files = path.list();
+
+    int r = floor(random(files.length));
+
+    return IMAGE_PATH + "\\" + files[r];
+  }
+
+  return null;
+}
+
+
+//------------------------EDGE DETECT-------------------------------------
+
+void edgeDetect(NoiseManager nse, PGraphics input, String name, int frame) {
+
+  float[][] yfilter = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+  float[][] xfilter = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+
+
+
+  input.loadPixels();
+  PGraphics ngX = createGraphics(input.width, input.height);
+  PGraphics ngY = createGraphics(input.width, input.height);
+  PGraphics ng  = createGraphics(input.width, input.height);
+  ngX.beginDraw();
+  ngX.loadPixels();
+
+  ngY.beginDraw();
+  ngY.loadPixels();
+
+
+  for (int x = 1; x < input.width-1; x += 1) {
+    for (int y = 1; y < input.height-1; y += 1) {
+
+      float sumX = 0;
+      float sumY = 0;
+      for (int i = 0; i < 3; i += 1) {
+        int xi = x + (i-1);
+        for (int j = 0; j < 3; j += 1) {
+          int yi = y + (j-1);
+
+          sumX += brightness(input.pixels[yi * input.width + xi]) * xfilter[i][j];
+          sumY += brightness(input.pixels[yi * input.width + xi]) * yfilter[i][j];
+        }
+      }
+      sumX /= 9;
+      sumY /= 9;
+      sumX = map(sumX, -127, 128, 0, 255);
+      sumY = map(sumY, -127, 128, 0, 255);
+      ngX.pixels[ (y-1) * input.width + (x-1)] = color(sumX);
+      ngY.pixels[ (y-1) * input.width + (x-1)] = color(sumX);
+    }
+  }
+
+  ngX.updatePixels();
+  ngY.updatePixels();
+  ng.beginDraw();
+  ng.loadPixels();
+
+  for (int x = 1; x < input.width-1; x += 1) {
+    for (int y = 1; y < input.height-1; y += 1) {
+      
+      float xc = brightness(ngX.get(x,y));
+      float yc = brightness(ngY.get(x,y));
+      
+      float b = sqrt((xc * xc) + (yc * yc));
+      
+      ng.pixels[y * input.width + x] = color(b);
+    }
+  }
+
+
+  ngX.endDraw();
+
+
+  ngY.endDraw();
+  ng.updatePixels();
+  ng.endDraw();
+  input.image(ng, 0, 0);
+}
+
 //----------------------CORRUPT DIMS----------------------------------------
 
 void corruptDims(NoiseManager nse, PGraphics input, String name, int frame) {
@@ -43,7 +137,7 @@ void corruptDims(NoiseManager nse, PGraphics input, String name, int frame) {
 
 //----------------------PIXELATE----------------------------------------
 void pixelate(NoiseManager nse, PGraphics input, String name, int frame) {
-  final int CELLSIZE = nse.snap(name, frame, 2, 8, 2);
+  final int CELLSIZE = nse.snap(name, frame, floor(sld_pixelate_min), floor(sld_pixelate_max), 1);
 
 
   int TA = ceil((float)input.width / (float)CELLSIZE);
@@ -91,6 +185,12 @@ void pixelate(NoiseManager nse, PGraphics input, String name, int frame) {
   }
 }
 
+
+
+//-----------------------------------------------VHS---------------------------------------------------------
+
+final float SQRT_TAU = sqrt(TAU);
+final float ONE_OVER_SQRT_TAU = 1.0 / SQRT_TAU;
 NoiseManager vhsNoise = new NoiseManager();
 void VHS(String name, PGraphics input, int frame) {
   input.loadPixels();
@@ -98,10 +198,10 @@ void VHS(String name, PGraphics input, int frame) {
   float ypos = vhsNoise.snap(name + "_vhs_ypos", frame, 0, input.height, 1);
   int h = vhsNoise.snap(name + "_vhs_height", frame, 0, 50, 10) + 10;
 
-  float roff = vhsNoise.snap(name + "_vhs_r", frame, 0, input.width/16, 5);
-  float goff = vhsNoise.snap(name + "_vhs_g", frame, 0, input.width/16, 5);
-  float boff = vhsNoise.snap(name + "_vhs_b", frame, 0, input.width/16, 5);
-  float aoff = vhsNoise.snap(name + "_vhs_a", frame, 0, input.width/16, 5);
+  float roff = vhsNoise.snap(name + "_vhs_r", frame, 0, input.width/32, 1) - (input.width / 16);
+  float goff = vhsNoise.snap(name + "_vhs_g", frame, 0, input.width/32, 1) - (input.width / 16);
+  float boff = vhsNoise.snap(name + "_vhs_b", frame, 0, input.width/32, 1) - (input.width / 16);
+  float aoff = vhsNoise.snap(name + "_vhs_a", frame, 0, input.width/32, 1) - (input.width / 16);
 
   for (int y = (int)ypos - h; y < ypos + h; y += 1) {
     float dist = (float)abs(ypos - y) / (float)h;
@@ -111,9 +211,8 @@ void VHS(String name, PGraphics input, int frame) {
     }
 
     int xoff = floor((input.width/8) - ((input.width/8) * dist));
-    float xo0 = 1.0 / sqrt(TAU);
-    xo0 *= exp(- 0.5 * (dist));
-    xoff = floor((input.width / 8) * xo0 + random(input.width/64));
+    float xo0 = ONE_OVER_SQRT_TAU * exp(- 0.8 * (dist));
+    xoff = floor((input.width / 8) * xo0);// + random(input.width/64));
     int yy = y;
     if (yy < 0 ) {
       yy = abs(yy);
@@ -152,8 +251,8 @@ void VHS(String name, PGraphics input, int frame) {
         int bi = yy * input.width + xb;
         int ai = yy * input.width + xa;
         int rc = overwriteChannel(input.pixels[ri], buffer[x], COL.R);
-        int gc = overwriteChannel(input.pixels[gi], buffer[x], COL.R);
-        int bc = overwriteChannel(input.pixels[bi], buffer[x], COL.R);
+        int gc = overwriteChannel(input.pixels[gi], buffer[x], COL.G);
+        int bc = overwriteChannel(input.pixels[bi], buffer[x], COL.B);
 
         input.pixels[ri] = rc;
         input.pixels[gi] = gc;
@@ -235,7 +334,7 @@ void move(NoiseManager nse, PGraphics input, COL mode, String name, int frame) {
 }
 
 
-///------------------------------------------ MESS --------------------------------
+
 
 
 void roundColours(PGraphics g) {
@@ -252,7 +351,7 @@ void roundColours(PGraphics g) {
 
   g.updatePixels();
 }
-
+///------------------------------------------ MESS --------------------------------
 void Mess(NoiseManager nse, PGraphics input, String name, int frame) {
   PGraphics ng = createGraphics(input.width, input.height);
 
@@ -280,10 +379,12 @@ void Mess(NoiseManager nse, PGraphics input, String name, int frame) {
   float c_g = nse.getNoise(name + "_c_g", frame);
   float d_g = nse.getNoise(name + "_d_g", frame);
 
+  int xs = floor((float)input.width / 4.0);
+
   for (int y = 0; y < input.height; y += 1) {
     for (int x = 0; x < input.width; x += 1) {
 
-      int xs = floor((float)x / 4.0);
+
 
       int c = input.pixels[y * input.width + x];
       float r = getChannelByte(c, COL.R);
@@ -306,10 +407,10 @@ void Mess(NoiseManager nse, PGraphics input, String name, int frame) {
       float cbc = b * c_b;
       float dbc = b * d_b;
 
-      ng.pixels[y * ng.width + (x%4)]          = roundColour(color(arc, agc, abc, 255), a_num);
-      ng.pixels[y * ng.width + (xs)+(x%4)]     = roundColour(color(brc, bgc, bbc, 255), b_num);
-      ng.pixels[y * ng.width + (xs*2)+(x%4)]   = roundColour(color(crc, cgc, cbc, 255), c_num);
-      ng.pixels[y * ng.width + (xs*3)+(x%4)]   = roundColour(color(drc, dgc, dbc, 255), d_num);
+      ng.pixels[y * ng.width + (x/4)]          = roundColour(color(arc, agc, abc, 255), a_num);
+      ng.pixels[y * ng.width + (xs)+(x/4)]     = roundColour(color(brc, bgc, bbc, 255), b_num);
+      ng.pixels[y * ng.width + (xs*2)+(x/4)]   = roundColour(color(crc, cgc, cbc, 255), c_num);
+      ng.pixels[y * ng.width + (xs*3)+(x/4)]   = roundColour(color(drc, dgc, dbc, 255), d_num);
     }
   }
 
