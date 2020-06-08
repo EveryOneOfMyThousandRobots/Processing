@@ -21,7 +21,38 @@ String getImageFile() {
   return null;
 }
 
+void drip(NoiseManager nse, PGraphics input, String name, int frame) {
 
+  input.loadPixels();
+
+  int startY = nse.snap(name + "_y", frame, 0, input.height/2, input.height/32) + input.height/2;
+  float maxR = nse.getNoise(name + "_mx_r", frame);
+  float maxG = nse.getNoise(name + "_mx_g", frame);
+  float maxB = nse.getNoise(name + "_mx_b", frame);
+  
+  int[] buffer = new int[input.width];
+
+  for (int x = 0; x < input.width; x += 1) {
+    buffer[x] = input.pixels[startY * input.width + x];
+  }
+
+  float t = 0;
+  for (int y = startY; y < input.height; y += 1) {
+    t = ((float) (y - startY) / (float) (input.height - startY));
+    
+    
+    
+    for (int x = 0; x < input.width; x += 1) {
+      float r = (float)getChannelByte(buffer[x],COL.R) * constrain(t, 0, maxR);
+      float g = (float)getChannelByte(buffer[x],COL.G) * constrain(t, 0, maxG);
+      float b = (float)getChannelByte(buffer[x],COL.B) * constrain(t, 0, maxB);
+      
+      input.pixels[y * input.width + x] = lerpColor(buffer[x], color(r,g,b), t);//buffer[x];
+    }
+  }
+  
+  input.updatePixels();
+}
 //------------------------EDGE DETECT-------------------------------------
 
 void edgeDetect(NoiseManager nse, PGraphics input, String name, int frame) {
@@ -29,7 +60,7 @@ void edgeDetect(NoiseManager nse, PGraphics input, String name, int frame) {
   float[][] yfilter = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
   float[][] xfilter = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
 
-
+  float thresh = nse.getNoise(name, frame);
 
   input.loadPixels();
   PGraphics ngX = createGraphics(input.width, input.height);
@@ -61,7 +92,7 @@ void edgeDetect(NoiseManager nse, PGraphics input, String name, int frame) {
       sumX = map(sumX, -127, 128, 0, 255);
       sumY = map(sumY, -127, 128, 0, 255);
       ngX.pixels[ (y-1) * input.width + (x-1)] = color(sumX);
-      ngY.pixels[ (y-1) * input.width + (x-1)] = color(sumX);
+      ngY.pixels[ (y-1) * input.width + (x-1)] = color(sumY);
     }
   }
 
@@ -72,13 +103,20 @@ void edgeDetect(NoiseManager nse, PGraphics input, String name, int frame) {
 
   for (int x = 1; x < input.width-1; x += 1) {
     for (int y = 1; y < input.height-1; y += 1) {
-      
-      float xc = brightness(ngX.get(x,y));
-      float yc = brightness(ngY.get(x,y));
-      
-      float b = sqrt((xc * xc) + (yc * yc));
-      
-      ng.pixels[y * input.width + x] = color(b);
+
+      float xc = brightness(ngX.get(x, y));
+      float yc = brightness(ngY.get(x, y));
+      color oc = input.pixels[y * input.width + x];
+
+
+      float b = sqrt((xc * xc) + (yc * yc)) / 255.0;
+
+
+      if (b > thresh) {
+        oc = lerpColor(color(0), oc, 1-b);
+      }
+
+      ng.pixels[y * input.width + x] = oc;//lerpColor(color(255), oc, b);
     }
   }
 
@@ -189,6 +227,18 @@ void pixelate(NoiseManager nse, PGraphics input, String name, int frame) {
 
 //-----------------------------------------------VHS---------------------------------------------------------
 
+float f_norm(float x, float mu, float sigma) {
+
+  float xp = 1 / (sigma * sqrt(TAU));
+
+  xp *= exp( - (0.5) * pow((x - mu) / sigma, 2));
+
+  return xp;
+}
+
+
+
+
 final float SQRT_TAU = sqrt(TAU);
 final float ONE_OVER_SQRT_TAU = 1.0 / SQRT_TAU;
 NoiseManager vhsNoise = new NoiseManager();
@@ -197,11 +247,16 @@ void VHS(String name, PGraphics input, int frame) {
 
   float ypos = vhsNoise.snap(name + "_vhs_ypos", frame, 0, input.height, 1);
   int h = vhsNoise.snap(name + "_vhs_height", frame, 0, 50, 10) + 10;
+  //float mu = vhsNoise.getNoise(name + "_vhs_mu", frame,0.1,2);
+  float sigma = vhsNoise.getNoise(name + "_vhs_sigma", frame, 0.1, 1);
 
-  float roff = vhsNoise.snap(name + "_vhs_r", frame, 0, input.width/32, 1) - (input.width / 16);
-  float goff = vhsNoise.snap(name + "_vhs_g", frame, 0, input.width/32, 1) - (input.width / 16);
-  float boff = vhsNoise.snap(name + "_vhs_b", frame, 0, input.width/32, 1) - (input.width / 16);
-  float aoff = vhsNoise.snap(name + "_vhs_a", frame, 0, input.width/32, 1) - (input.width / 16);
+
+  float aoff = vhsNoise.snap(name + "_vhs_a", frame, 0, input.width/8, 1) - (input.width / 16);
+
+  float roff = aoff * vhsNoise.getNoise(name + "_vhs_r", frame, 0, 5);
+  float goff = aoff * vhsNoise.getNoise(name + "_vhs_g", frame, 0, 5);//vhsNoise.snap(name + "_vhs_g", frame, 0, input.width/8, 1) - (input.width / 16);
+  float boff = aoff * vhsNoise.getNoise(name + "_vhs_b", frame, 0, 5);//vhsNoise.snap(name + "_vhs_b", frame, 0, input.width/8, 1) - (input.width / 16);
+
 
   for (int y = (int)ypos - h; y < ypos + h; y += 1) {
     float dist = (float)abs(ypos - y) / (float)h;
@@ -211,8 +266,10 @@ void VHS(String name, PGraphics input, int frame) {
     }
 
     int xoff = floor((input.width/8) - ((input.width/8) * dist));
-    float xo0 = ONE_OVER_SQRT_TAU * exp(- 0.8 * (dist));
-    xoff = floor((input.width / 8) * xo0);// + random(input.width/64));
+    //float xo0 = ONE_OVER_SQRT_TAU * exp(- L * (dist));
+    dist = 1- (dist);
+    float xo0 = f_norm(dist, 1, sigma);
+    xoff = floor(map(xo0, 0, 1, 0, input.width/8));//floor((input.width / 8) * xo0);// + random(input.width/64));
     int yy = y;
     if (yy < 0 ) {
       yy = abs(yy);
@@ -232,10 +289,13 @@ void VHS(String name, PGraphics input, int frame) {
 
     for (int x = 0; x < input.width; x += 1) {
       int xx = (x + xoff) % input.width;
-      int xr = floor((x + xoff + roff) % input.width);
-      int xg = floor((x + xoff + goff) % input.width);
-      int xb = floor((x + xoff + boff) % input.width);
-      int xa = floor((x + xoff + aoff) % input.width);
+      if (xx < 0) {
+        xx = input.width - (abs(xx)%input.width);
+      }
+      int xr = floor(abs(x + (xo0 *roff)) % input.width);
+      int xg = floor(abs(x + (xo0 *goff)) % input.width);
+      int xb = floor(abs(x + (xo0 *boff)) % input.width);
+      int xa = floor(abs(x + (xo0 *aoff)) % input.width);
 
       int r = floor(random(100)) % 4;
 

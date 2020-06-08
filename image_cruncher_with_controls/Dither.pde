@@ -10,7 +10,7 @@ float[][] dither_matrix_factors;
  void dither(NoiseManager nse, PGraphics input_image, String name, int frame) {
     input_image.loadPixels();
     PGraphics ng = createGraphics(input_image.width, input_image.height);
-    int numColours = nse.snap(name, frame, 4, 16, 1);
+    int numColours = nse.snap(name, frame, 2, 8, 1);
     ng.beginDraw();
     ng.loadPixels();
     for (int xm = 0; xm < input_image.width; xm += 4) {

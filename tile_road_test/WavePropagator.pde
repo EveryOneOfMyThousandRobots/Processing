@@ -9,10 +9,11 @@ class WavyBoi {
   }
 }
 
-class Tuple {
-  int x,y,z;
-  Tuple(int x, int y, int  
-}
+//class Tuple {
+//  int x,y,z;
+//  Tuple(int x, int y, int z){
+//  }
+//}
 
-Tuple MT(int x, int y, int z) {
-}
+//Tuple MT(int x, int y, int z) {
+//}

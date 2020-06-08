@@ -64,6 +64,10 @@ void createOutputImage() {
           break;
         case "EDGE":
           edgeDetect(nm, output, name, f);
+          break;
+        case "DRIP":
+          drip(nm, output, name, f);
+          break;
         };
       }
       output.endDraw();

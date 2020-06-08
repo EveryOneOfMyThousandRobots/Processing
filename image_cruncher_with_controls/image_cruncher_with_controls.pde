@@ -2,8 +2,8 @@ PImage base = null;
 PGraphics output = null;
 PGraphics[] frames = null;
 int frameIndex = -1;
-String[] effects = {"BTN_FX_PIXELATE", "BTN_FX_REPLACE", "BTN_FX_DITHER", "BTN_FX_CORRUPT", "BTN_FX_MOVE_R", "BTN_FX_MOVE_G", "BTN_FX_MOVE_B", "BTN_FX_MOVE_ALL", "BTN_FX_MESS", "BTN_FX_VHS", "BTN_FX_EDGE"};
-String[] effects_labels = {"PIXELATE", "REPLACE", "DITHER", "CORRUPT", "MOVE_R", "MOVE_G", "MOVE_B", "MOVE_ALL", "MESS", "VHS", "EDGE"};
+String[] effects = {"BTN_FX_PIXELATE", "BTN_FX_REPLACE", "BTN_FX_DITHER", "BTN_FX_CORRUPT", "BTN_FX_MOVE_R", "BTN_FX_MOVE_G", "BTN_FX_MOVE_B", "BTN_FX_MOVE_ALL", "BTN_FX_MESS", "BTN_FX_VHS", "BTN_FX_EDGE", "BTN_FX_DRIP"};
+String[] effects_labels = {"PIXELATE", "REPLACE", "DITHER", "CORRUPT", "MOVE_R", "MOVE_G", "MOVE_B", "MOVE_ALL", "MESS", "VHS", "EDGE", "DRIP"};
 
 import controlP5.*;
 final String IMAGE_PATH = "S:\\PHOTOS";
@@ -71,25 +71,7 @@ void setup() {
 
   grpEffects.disableCollapse();
   grpControls.disableCollapse();
-  //cbl = new CallbackListener() {
-  //  public void controlEvent(CallbackEvent theEvent) {
-  //    switch(theEvent.getAction()) {
-  //      case(ControlP5.PRESSED):
 
-  //      case(ControlP5.ACTION_ENTER):
-  //      //info.n = 1;
-  //      info.setText(theEvent.getAction() + "\n" + theEvent.getController().getInfo());
-  //      cursor(HAND);
-  //      break;
-  //      case(ControlP5.ACTION_LEAVE):
-  //      case(ControlP5.ACTION_RELEASEDOUTSIDE):
-
-  //      cursor(ARROW);
-  //      break;
-  //    }
-  //  }
-  //};
-  // cntrl.addCallback(cbl);
   float xstep = width / float(effects.length + 1);
   float x = xstep/2;
   for (int i = 0; i < effects.length; i += 1) {
