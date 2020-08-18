@@ -1,12 +1,12 @@
 package g4p.tool.controls;
 
-import g4p.tool.G;
-import g4p.tool.ToolMessages;
-import g4p.tool.gui.propertygrid.Validator;
-
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import g4p.tool.G;
+import g4p.tool.ToolMessages;
+import g4p.tool.gui.propertygrid.Validator;
 
 @SuppressWarnings("serial")
 public class DTextField extends DTextBase {
@@ -73,13 +73,16 @@ public class DTextField extends DTextBase {
 		g.fillRect(1, 1, _0826_width-2, _0827_height-2);
 		g.setStroke(stdStroke);
 
-		g.setColor(jpalette[2]);
-		g.drawString(this._0010_name, 4, 12 );
+//		g.setColor(jpalette[2]);
+//		g.drawString(this._0010_name, 4, 12 );
 
 		if(_0186_horz_scrollbar){
 			g.setColor(jpalette[3]);
 			g.fillRect(2, _0827_height - 12, _0826_width-4, 10);
 		}
+		
+		g.setColor(jpalette[2]);
+		displayString(g, DBase.globalInputFont, name);
 		
 		if(this == selected)
 			drawSelector(g);

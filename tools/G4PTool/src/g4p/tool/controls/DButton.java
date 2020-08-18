@@ -1,12 +1,12 @@
 package g4p.tool.controls;
 
-import g4p.tool.G;
-import g4p.tool.ToolMessages;
-import g4p_controls.StyledString;
-
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import g4p.tool.G;
+import g4p.tool.ToolMessages;
+import g4p_controls.StyledString;
 
 @SuppressWarnings("serial")
 public class DButton extends DTextIconAlign {
@@ -31,6 +31,8 @@ public class DButton extends DTextIconAlign {
 
 	public void draw(Graphics2D g, DBase selected){
 		G.pushMatrix(g);
+		g.setFont(DBase.globalDisplayFont);
+
 		g.translate(_0820_x, _0821_y);
 		
 		int pad = DBase.useRoundCorners ? 4 : 2;

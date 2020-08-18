@@ -10,33 +10,6 @@
  */
 package g4p.tool.gui;
 
-import g4p.tool.G4PTool;
-import g4p.tool.controls.DApplication;
-import g4p.tool.controls.DBase;
-import g4p.tool.controls.DButton;
-import g4p.tool.controls.DCheckbox;
-import g4p.tool.controls.DCustomSlider;
-import g4p.tool.controls.DDropList;
-import g4p.tool.controls.DImageButton;
-import g4p.tool.controls.DImageToggleButton;
-import g4p.tool.controls.DKnob;
-import g4p.tool.controls.DLabel;
-import g4p.tool.controls.DOption;
-import g4p.tool.controls.DPanel;
-import g4p.tool.controls.DPassword;
-import g4p.tool.controls.DView;
-import g4p.tool.controls.DSlider;
-import g4p.tool.controls.DSlider2D;
-import g4p.tool.controls.DStick;
-import g4p.tool.controls.DTextArea;
-import g4p.tool.controls.DTextField;
-import g4p.tool.controls.DTimer;
-import g4p.tool.controls.DToggleGroup;
-import g4p.tool.controls.DWindow;
-import g4p.tool.gui.propertygrid.CtrlPropView;
-import g4p.tool.gui.tabview.CtrlTabView;
-import g4p.tool.gui.treeview.CtrlSketchView;
-
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -56,6 +29,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
 
+import g4p.tool.G4PTool;
+import g4p.tool.controls.DApplication;
+import g4p.tool.controls.DBase;
+import g4p.tool.controls.DButton;
+import g4p.tool.controls.DCheckbox;
+import g4p.tool.controls.DCustomSlider;
+import g4p.tool.controls.DDropList;
+import g4p.tool.controls.DImageButton;
+import g4p.tool.controls.DImageToggleButton;
+import g4p.tool.controls.DKnob;
+import g4p.tool.controls.DLabel;
+import g4p.tool.controls.DOption;
+import g4p.tool.controls.DPanel;
+import g4p.tool.controls.DPassword;
+import g4p.tool.controls.DSlider;
+import g4p.tool.controls.DSlider2D;
+import g4p.tool.controls.DStick;
+import g4p.tool.controls.DTextArea;
+import g4p.tool.controls.DTextField;
+import g4p.tool.controls.DTimer;
+import g4p.tool.controls.DToggleGroup;
+import g4p.tool.controls.DView;
+import g4p.tool.controls.DWindow;
+import g4p.tool.gui.propertygrid.CtrlPropView;
+import g4p.tool.gui.tabview.CtrlTabView;
+import g4p.tool.gui.treeview.CtrlSketchView;
 import processing.app.ui.Editor;
 
 /**
@@ -122,7 +121,6 @@ public class GuiDesigner extends javax.swing.JFrame {
 	 * Creates new form GuiDesignFrame
 	 */
 	public GuiDesigner() {
-		System.out.println("START");
 		instance = this;
 		initComponents();
 		initCustomComponents();
@@ -144,13 +142,12 @@ public class GuiDesigner extends javax.swing.JFrame {
 		this.tool = tool;
 		initComponents();
 		initCustomComponents();
-		this.setTitle("G4P GUI Builder " + "4.3");
+		this.setTitle("G4P GUI Builder " + "4.4.1");
 		guiControl = new GuiControl(editor, tabWindows, treeSketchView, tblPropView);
 		guiControl.loadGuiLayout();
 		addKeyBinding(editor);
 		createWindowAdapter();
 		listenToEditorClosing(this);
-
 	}
 
 	/**

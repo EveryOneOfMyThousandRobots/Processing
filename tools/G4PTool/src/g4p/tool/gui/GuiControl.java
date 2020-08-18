@@ -1,5 +1,6 @@
 package g4p.tool.gui;
 
+import g4p.tool.G4PTool;
 import g4p.tool.TDataConstants;
 import g4p.tool.TFileConstants;
 import g4p.tool.controls.Code;
@@ -106,7 +107,7 @@ public class GuiControl implements TFileConstants, TDataConstants {
 	 * @param sst width and height
 	 */
 	public void setSketchSize(SketchSizeType sst){
-		if(sst != null){
+		if(sst != null && !G4PTool.DEBUG){
 			DWindow m = (DWindow) tree.getRoot().getChildAt(0);
 			if(m._0826_width != sst.width && sst.width > 0){
 				m._0826_width = sst.width;
@@ -132,6 +133,10 @@ public class GuiControl implements TFileConstants, TDataConstants {
 	 * @return null if no size found
 	 */
 	public SketchSizeType getSketchSizeFromCode(){
+		if(G4PTool.DEBUG) {
+			tabs.repaint();
+			return new SketchSizeType("480", "320", "JAVA2D");
+		}
 		SketchSizeType s = null;
 		Sketch sketch = editor.getSketch();
 		SketchCode curr =  sketch.getCurrentCode();
@@ -205,6 +210,9 @@ public class GuiControl implements TFileConstants, TDataConstants {
 	 * Capture user code in the event handlers
 	 */
 	public void codeCapture(){
+		if(G4PTool.DEBUG) {
+			return;
+		}
 		Sketch sketch = editor.getSketch();
 		int currTab = sketch.getCurrentCodeIndex();
 		SketchCode gui_tab = getTab(sketch, PDE_TAB_PRETTY_NAME);

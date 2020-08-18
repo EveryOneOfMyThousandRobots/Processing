@@ -1,11 +1,18 @@
 package g4p.tool.controls;
 
+import g4p.tool.G;
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.propertygrid.EditorBase;
 import g4p.tool.gui.propertygrid.EditorJComboBox;
 import g4p_controls.GCScheme;
+import g4p_controls.StyledString;
+import g4p_controls.StyledString.TextLayoutInfo;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.TextLayout;
+import java.util.LinkedList;
 
 /**
  * 
@@ -17,6 +24,8 @@ public class DBaseVisual extends DBase {
 
 	public int colScheme;
 	public Color[] jpalette;
+
+//	public StyledString stextxx = null;
 
 	public Boolean 		_0009_lock  = false;
 	public Boolean 		lock_edit = true;
@@ -64,6 +73,29 @@ public class DBaseVisual extends DBase {
 		propertyModel.hasBeenChanged();
 	}
 
+	protected void displayString(Graphics2D g, Font font, StyledString string){
+		G.pushMatrix(g);
+		g.setFont(font);
+		LinkedList<TextLayoutInfo> lines = string.getLines(g);
+		// Now translate to text start position
+//		g.translate(2, _0827_height - string.getTextAreaHeight()  );
+//		g.translate(2, string.getTextAreaHeight()  );
+//		g.translate(2, string.getMaxLineHeight()  );
+		g.translate(2, 0  );
+		// Now display each line
+		for(TextLayoutInfo lineInfo : lines){
+			TextLayout layout = lineInfo.layout;
+			g.translate(0, layout.getAscent());
+			// display text
+			g.setColor(jpalette[2]);
+			layout.draw(g, 0, 0);
+			g.translate(0, layout.getDescent() + layout.getLeading());	
+		}
+		G.popMatrix(g);
+	}
+	
+	
+	
 	protected void read(){
 		super.read();
 		col_scheme_editor = new EditorJComboBox(COLOUR_SCHEME);

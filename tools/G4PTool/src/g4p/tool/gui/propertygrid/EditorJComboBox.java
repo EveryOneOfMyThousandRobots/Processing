@@ -31,9 +31,10 @@ public class EditorJComboBox extends EditorBase {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public EditorJComboBox(int type){
 		validator = Validator.getValidator(type);
-		if(component == null)
+		if(component == null) {
+			// Get the combo model for this JComboBox
 			component = new JComboBox(ListGen.instance().getComboBoxModel(type));
-		
+		}
 	}
 
 

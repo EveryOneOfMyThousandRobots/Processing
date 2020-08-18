@@ -66,6 +66,7 @@ public class DDropList extends DBaseVisual {
 
 	public void draw(Graphics2D g, DBase selected){
 		G.pushMatrix(g);
+		g.setFont(DBase.globalDisplayFont);
 		g.translate(_0820_x, _0821_y);
 		
 		// Draw background for item list

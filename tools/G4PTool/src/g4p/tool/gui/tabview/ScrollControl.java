@@ -64,7 +64,7 @@ public class ScrollControl extends JPanel implements IScrollAreaUser, TGuiConsta
 		this(window._0826_width,  window._0827_height);
 		this.tabCtrl = tabCtrl;
 		this.window = window;
-		area.setFont(displayFont);
+//		area.setFont(displayFont);
 		area.setBackground(new Color(255,240,240));
 	}
 

@@ -1,15 +1,14 @@
 package g4p.tool.controls;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.propertygrid.EditorBase;
 import g4p.tool.gui.propertygrid.EditorJComboBox;
 import g4p.tool.gui.propertygrid.EditorJFileChooser;
 import g4p.tool.gui.propertygrid.Validator;
 import g4p_controls.StyledString;
-
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")

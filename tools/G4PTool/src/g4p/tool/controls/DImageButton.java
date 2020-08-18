@@ -1,13 +1,13 @@
 package g4p.tool.controls;
 
-import g4p.tool.G;
-import g4p.tool.ToolMessages;
-import g4p.tool.gui.propertygrid.EditorJFileChooser;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import g4p.tool.G;
+import g4p.tool.ToolMessages;
+import g4p.tool.gui.propertygrid.EditorJFileChooser;
 
 /**
  * 
@@ -15,7 +15,7 @@ import java.io.ObjectInputStream;
  *
  */
 @SuppressWarnings("serial")
-public class DImageButton extends DBase {
+public class DImageButton extends DBaseVisual {
 
 	transient BufferedImage image = null;
 	
@@ -67,7 +67,8 @@ public class DImageButton extends DBase {
 		componentClass = "GImageButton";
 		set_name(NameGen.instance().getNext("imgButton"));
 		set_event_name(NameGen.instance().getNext(get_name()+ "_click"));
-
+		col_scheme_show = false;
+		opaque_show = false;
 		width_edit = height_edit = true;
 		width_show = height_show = true;
 		_0826_width = 100;

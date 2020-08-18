@@ -2,7 +2,6 @@ package g4p.tool;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 
 public interface TGuiConstants {
 	
@@ -47,7 +46,7 @@ public interface TGuiConstants {
 	int TEXT_AND_ICON		= 	0x00000002;
 
 	// Fonts
-    Font displayFont 		= new Font("Sans Serif", Font.PLAIN, 11);
+ //   Font displayFont 		= new Font("Sans Serif", Font.PLAIN, 11);
 
     
 	// Drawing constants

@@ -1,5 +1,10 @@
 package g4p.tool.controls;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import g4p.tool.G;
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.ToolImage;
@@ -7,14 +12,9 @@ import g4p.tool.gui.propertygrid.EditorBase;
 import g4p.tool.gui.propertygrid.EditorJComboBox;
 import g4p.tool.gui.propertygrid.Validator;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 
 @SuppressWarnings("serial")
-public class DView extends DBase {
+public class DView extends DBaseVisual {
 
 	transient public BufferedImage icon;
 
@@ -61,6 +61,8 @@ public class DView extends DBase {
 		set_name(NameGen.instance().getNext("view"));
 		_0826_width = 80;
 		_0827_height = 60;
+		col_scheme_show = false;
+		opaque_show = false;
 		eventHandler_edit = eventHandler_show = false;
 		icon = ToolImage.getImage("VIEW_ICON");
 	}

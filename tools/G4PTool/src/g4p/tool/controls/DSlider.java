@@ -1,12 +1,12 @@
 package g4p.tool.controls;
 
-import g4p.tool.G;
-import g4p.tool.ToolMessages;
-import g4p.tool.gui.propertygrid.Validator;
-
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import g4p.tool.G;
+import g4p.tool.ToolMessages;
+import g4p.tool.gui.propertygrid.Validator;
 
 @SuppressWarnings("serial")
 public class DSlider extends DLinearTrack {
@@ -23,6 +23,7 @@ public class DSlider extends DLinearTrack {
 		super();
 		componentClass = "GSlider";
 		set_name(NameGen.instance().getNext("slider"));
+//		name = new StyledString(_0010_name);
 		set_event_name(NameGen.instance().getNext(get_name()+ "_change"));
 		_0826_width = 100;
 		_0827_height = 40;
@@ -82,6 +83,8 @@ public class DSlider extends DLinearTrack {
 		// thumb
 		g.setColor(jpalette[0]);
 		g.fillRect(leftX, topY, thick, thick);
+		// Control name
+		displayString(g, DBase.globalSliderFont, name);
 		
 		if(this == selected)
 			drawSelector(g);

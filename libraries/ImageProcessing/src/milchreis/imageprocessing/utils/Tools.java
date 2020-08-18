@@ -57,7 +57,11 @@ public class Tools {
 		return image;
 	}
 
-	public int[] getArray(int arr[], int val) {
+    public static int getRGB(int[] rgb) {
+		return getRGB(rgb[0], rgb[1], rgb[2]);
+    }
+
+    public int[] getArray(int arr[], int val) {
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = val;
 		}
@@ -98,10 +102,13 @@ public class Tools {
 	 * @return
 	 */
 	public static float[] rgbToHsb(int rgb) {
-		int[] arrRGB = getRGB(rgb);
-		return rgbToHsb(arrRGB[0], arrRGB[1], arrRGB[2]);
+		return rgbToHsb(getRGB(rgb));
 	}
-	
+
+	public static float[] rgbToHsb(int[] rgb) {
+		return rgbToHsb(rgb[0], rgb[1], rgb[2]);
+	}
+
 	/**
 	 * Returns an array for hue, saturation and brightness
 	 * in range:
@@ -120,7 +127,7 @@ public class Tools {
 		
 		return hsb;
 	}
-	
+
 	public static int hsbToRgb(float[] hsb) {
 		return hsbToRgb(hsb[0], hsb[1], hsb[2]);
 	}
@@ -129,7 +136,18 @@ public class Tools {
 		h = PApplet.map(h, 0f, 360f, 0, 1f);
 		return Color.HSBtoRGB(h, s, b);
 	}
-	
+
+	public static float[] rgbToCmyk(int rgb) {
+		int[] rgbArr = getRGB(rgb);
+		float k = 1 - (Math.max(rgbArr[0], Math.max(rgbArr[1], rgbArr[2]))/255.0f);
+		return new float[] {
+				(1 - (rgbArr[0] / 255.0f) - k) / (1 - k),
+				(1 - (rgbArr[1] / 255.0f) - k) / (1 - k),
+				(1 - (rgbArr[2] / 255.0f) - k) / (1 - k),
+				k
+		};
+	}
+
 	public static boolean in(int x, int start, int end) {
 		return in((float)x, start, end);
 	}
@@ -163,6 +181,13 @@ public class Tools {
 				target.set(x, y, getRGB(rgbT[0], rgbT[1], rgbT[2]));
 			}
 		}
+	}
+
+	public static int getGrey(int color) {
+		int r = (color & 0x00FF0000) >> 16;
+		int g = (color & 0x0000FF00) >> 8;
+		int b = (color & 0x000000FF);
+		return (r + b + g) / 3;
 	}
 
 }

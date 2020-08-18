@@ -1,10 +1,11 @@
 package g4p.tool.controls;
 
-import g4p.tool.TDataConstants;
-
+import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
+
+import g4p.tool.TDataConstants;
 
 /**
  * Singleton class used to create and store option lists for combobox editors. <br>
@@ -40,7 +41,7 @@ public final class ListGen implements TDataConstants {
 		makeGWSliderSkinSelection(SLIDER_SKIN);
 		makeRendererSelection(RENDERER);
 		makeKnobControllerSelection(KNOB_CTRL);
-//		makeHorzAlignSelection2(H_ALIGN_2);
+		//		makeHorzAlignSelection2(H_ALIGN_2);
 		makeIconPosSelection(ICON_POS);
 		makeHorzAlignSelection3(H_ALIGN);
 		makeVertAlignSelection(V_ALIGN);
@@ -49,14 +50,30 @@ public final class ListGen implements TDataConstants {
 		makeStickTypeSelection(STICK_TYPE);
 		makeCloseActionSelection(CLOSE_ACTION);
 		makeScaleSelection(SCALE);
+		makeFontSelection(FONT);
+		makeFontStyleSelection(FONT_STYLE);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private void makeFontStyleSelection(int type) {
+		String[] s = new String[] {"Plain", "Bold", "Italic", "Bold-Italic"};
+		cbList.put(type,  new DefaultComboBoxModel(s));	
+	}
+
+	@SuppressWarnings("unchecked")
+	private void makeFontSelection(int type) {
+		GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		String[] s = ge.getAvailableFontFamilyNames();
+		cbList.put(type,  new DefaultComboBoxModel(s));		
+	}
+
 	@SuppressWarnings("unchecked")
 	private void makeScaleSelection(int type) {
 		String[] s = new String[] {"200", "150", "100", "75", "50", "25"};
 		cbList.put(type,  new DefaultComboBoxModel(s));	
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void makeCloseActionSelection(int type) {
 		String[] s = new String[] {"KEEP_OPEN", "CLOSE_WINDOW", "EXIT_APP"};
@@ -96,7 +113,7 @@ public final class ListGen implements TDataConstants {
 				"SCHEME_12", "SCHEME_13", "SCHEME_14", "SCHEME_15" };
 		cbList.put(type,  new DefaultComboBoxModel(s));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void makeCursorShapeSelection(int type){
 		String[] s = new String[] { "ARROW", "CROSS", 
@@ -110,7 +127,7 @@ public final class ListGen implements TDataConstants {
 				"green_red20px", "purple18px", "red_yellow18px" };
 		cbList.put(type,  new DefaultComboBoxModel(s));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void makeKnobControllerSelection(int type){
 		String[] s = new String[] { "ANGULAR", "HORIZONTAL", "VERTICAL" };
@@ -135,12 +152,13 @@ public final class ListGen implements TDataConstants {
 		cbList.put(type,  new DefaultComboBoxModel(s));
 	}
 
+
 	// ================================================================
-	
+
 	public boolean hasComboModel(int type){
 		return cbList.containsKey(type);
 	}
-	
+
 	public DefaultComboBoxModel getComboBoxModel(int key){
 		return cbList.get(key);
 	}
@@ -148,11 +166,11 @@ public final class ListGen implements TDataConstants {
 	public void setSelectedValue(int key, String value){
 		cbList.get(key).setSelectedItem(value);
 	}
-	
+
 	public int getIndexOf(int key, String value){
 		return cbList.get(key).getIndexOf(value);
 	}
-	
+
 	public int getSize(int key){
 		return cbList.get(key).getSize();
 	}

@@ -9,8 +9,10 @@ import g4p.tool.gui.propertygrid.CtrlPropModel;
 import g4p.tool.gui.propertygrid.Validator;
 import g4p.tool.gui.tabview.MutableDBase;
 import g4p_controls.GCScheme;
+import g4p_controls.StyledString;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -90,10 +92,18 @@ public abstract class DBase extends DefaultMutableTreeNode implements Serializab
 	// The name of the equivalent class in G4P
 	public String componentClass = "";
 
+	StyledString name = null;
+	
 	// Global Colour scheme
 	public static int globalColorSchemeID = GCScheme.BLUE_SCHEME; // Blue
 	public static String globalColorSchemeName = "BLUE_SCHEME"; // Blue
 	public static Color[] globalJpalette = GCScheme.getJavaColor(globalColorSchemeID);
+
+	
+	// GText font
+    public static Font globalDisplayFont = new Font("Arial", Font.PLAIN, 12);
+    public static Font globalInputFont = new Font("Arial", Font.PLAIN, 12);
+    public static Font globalSliderFont = new Font("Arial", Font.BOLD, 11);
 	
 	// Unique id numbers to identify event handlers and used to capture
 	// user code.
@@ -105,6 +115,7 @@ public abstract class DBase extends DefaultMutableTreeNode implements Serializab
 	public Boolean 		name_edit = true;
 	public Boolean 		name_show = true;
 	public Validator 	name_validator = Validator.getValidator(COMPONENT_NAME);
+	public String		name_updater = "variableNameChanger";
 
 	public int 			_0820_x = 0;
 	public String 		x_label = "X";
@@ -149,7 +160,10 @@ public abstract class DBase extends DefaultMutableTreeNode implements Serializab
 		id[0] = IdGen.instance().getNext();
 	}
 
-
+	public void variableNameChanger() {
+		name = new StyledString(_0010_name);
+	}
+	
 	// ==========================================================================
 	// ==========================================================================
 	// ===========   Stuff for control declaration and  generation   ============
@@ -484,8 +498,9 @@ public abstract class DBase extends DefaultMutableTreeNode implements Serializab
 	// ==================   Setters and getters   ===============================
 	// ==========================================================================
 
-	public void set_name(String name){
-		_0010_name = name;
+	public void set_name(String c_name){
+		name = new StyledString(c_name);
+		_0010_name = c_name;
 	}
 
 	public void set_event_name(String e_name){

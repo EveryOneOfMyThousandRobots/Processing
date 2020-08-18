@@ -17,7 +17,7 @@ import java.io.ObjectInputStream;
  *
  */
 @SuppressWarnings("serial")
-public class DImageToggleButton extends DBase {
+public class DImageToggleButton extends DBaseVisual {
 
 	transient BufferedImage image = null;
 
@@ -54,7 +54,8 @@ public class DImageToggleButton extends DBase {
 		componentClass = "GImageToggleButton";
 		set_name(NameGen.instance().getNext("imgTogButton"));
 		set_event_name(NameGen.instance().getNext(get_name()+ "_click"));
-
+		col_scheme_show = false;
+		opaque_show = false;
 		image = ToolImage.getImage("IMG_TOG_BTN_ICON");
 		_0826_width = image.getWidth()/_0052_cols;
 		_0827_height = image.getHeight()/_0053_rows;

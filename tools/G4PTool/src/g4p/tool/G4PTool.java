@@ -1,7 +1,7 @@
 /**
  * GUI form designer for G4P.
  *
- * (C) 2017
+ * (C) 2019
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,18 +19,18 @@
  * Boston, MA  02111-1307  USA
  * 
  * @author		Peter Lager http://www.lagers.org.uk
- * @modified	01/23/2019
+ * @modified	02/22/2020
  * @version		##version##
  */
 package g4p.tool;
 
-import g4p.tool.gui.GuiDesigner;
-import g4p_controls.GCScheme;
-
+import java.awt.Color;
 import java.io.File;
 
 import javax.swing.JFrame;
 
+import g4p.tool.gui.GuiDesigner;
+import g4p_controls.GCScheme;
 import processing.app.Base;
 import processing.app.Messages;
 import processing.app.Sketch;
@@ -44,12 +44,14 @@ import processing.app.ui.Editor;
  */
 public class G4PTool implements Tool, TFileConstants {
 	
-//	public static boolean DEBUG = false;
+	public static boolean DEBUG = false;
 
-	// Keep traks of the base and use this to get the editor
+	public static Color[] cscheme = { new Color(0,0,0) };
+	
+	// Keep track of the base and uses this to get the editor
 	public static Base base;
 	// keep track of the FUI designer for this sketch
-	private GuiDesigner dframe;
+	private static GuiDesigner dframe;
 
 	private boolean g4p_error_shown = false;
 
@@ -63,7 +65,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return revision number string
 	 */
 	public static String getVersion(){
-		return "4.3";
+		return "4.4.1";
 	}
 
 	/**
@@ -71,7 +73,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return revision number string
 	 */
 	public static String getCompatibleVersionNo(){
-		String n[] = "4.3".split("[\\.]");
+		String n[] = "4.4.1".split("[\\.]");
 		return n[0] + "." + n[1];
 	}
 
@@ -84,7 +86,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return version number as int
 	 */
 	public static int getVersionNo(){
-		String n[] = "4.3".split("[\\.]");
+		String n[] = "4.4.1".split("[\\.]");
 		int[] vnp = new int[3];
 		for(int i = 0; i < n.length; i++){
 			try {
@@ -133,7 +135,7 @@ public class G4PTool implements Tool, TFileConstants {
 		if (dframe == null) { // Design window does not exist
 			
 			System.out.println("===================================================");
-			System.out.println("   G4P GUI Builder 4.3 created by Peter Lager");
+			System.out.println("   G4P GUI Builder 4.4.1 created by Peter Lager");
 			System.out.println("===================================================");
 
 			// If the gui.pde tab does not exist create it
@@ -204,5 +206,14 @@ public class G4PTool implements Tool, TFileConstants {
 		return f.exists();
 	}
 
+//	public static void main(String[] args) {
+//		DEBUG = true;
+//		System.out.println("G4PTool Debug mode");
+//		dframe = new GuiDesigner();
+//		dframe.setVisible(true);
+//		dframe.setExtendedState(JFrame.NORMAL);
+//		dframe.toFront();
+//
+//	}
 
 }

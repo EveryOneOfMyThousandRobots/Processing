@@ -264,9 +264,14 @@ public class CtrlSketchView extends JTree {
 			IdGen.instance().remove(comp.id[i]);
 	}
 
-	public DBase getRoot() {
-		return (DBase) getModel().getRoot();
+	public DefaultMutableTreeNode getRoot() {
+		return (DefaultMutableTreeNode) getModel().getRoot();
 	}
+//	public DBase getRoot() {
+//		Object obj = getModel().getRoot();
+//		System.out.println(obj.getClass().getSimpleName());
+//		return (DBase) getModel().getRoot();
+//	}
 
 	public void generateDeclarations(ArrayList<String> lines) {
 		DefaultTreeModel m = (DefaultTreeModel) getModel();

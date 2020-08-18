@@ -2,6 +2,7 @@ package g4p.tool.controls;
 
 import g4p.tool.G;
 import g4p.tool.ToolMessages;
+import g4p_controls.StyledString;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class DSlider2D extends DValue2D {
 		super();
 		componentClass = "GSlider2D";
 		set_name(NameGen.instance().getNext("slider2d"));
+		name = new StyledString(_0010_name);
 		set_event_name(NameGen.instance().getNext(get_name()+ "_change"));
 		
 		_0826_width = 50;
@@ -52,6 +54,9 @@ public class DSlider2D extends DValue2D {
 		g.setColor(jpalette[2]);
 		g.setStroke(stdStroke);
 		g.drawRect(0, 0, _0826_width, _0827_height);
+
+		// Control name
+		displayString(g, DBase.globalSliderFont, name);
 
 		if(this == selected)
 			drawSelector(g);

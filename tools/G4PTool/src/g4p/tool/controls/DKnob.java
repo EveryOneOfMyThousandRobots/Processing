@@ -134,7 +134,7 @@ public class DKnob extends DValue1D {
 		g.drawLine(0, 0, Math.round(0.707f*hs), Math.round(0.707f*hs));
 
 		g.translate(-_0826_width/2, -_0827_height/2);
-
+		displayString(g, globalDisplayFont, name);
 		if(this == selected)
 			drawSelector(g);
 		G.popMatrix(g);;

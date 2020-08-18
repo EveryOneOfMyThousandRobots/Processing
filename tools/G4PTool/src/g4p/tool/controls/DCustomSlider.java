@@ -4,6 +4,7 @@ import g4p.tool.G;
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.propertygrid.EditorBase;
 import g4p.tool.gui.propertygrid.EditorJComboBox;
+import g4p_controls.StyledString;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class DCustomSlider extends DLinearTrack {
 		super();
 		componentClass = "GCustomSlider";
 		set_name(NameGen.instance().getNext("custom_slider"));
+		name = new StyledString(_0010_name);
 		set_event_name(NameGen.instance().getNext(get_name()+ "_change"));
 		_0826_width = 100;
 		_0827_height = 40;
@@ -56,6 +58,7 @@ public class DCustomSlider extends DLinearTrack {
 
 	public void draw(Graphics2D g, DBase selected){
 		G.pushMatrix(g);
+		g.setFont(DBase.globalSliderFont);
 		g.translate(_0820_x, _0821_y);
 		int cx = _0826_width/2;
 		int cy = _0827_height/2;
@@ -95,6 +98,8 @@ public class DCustomSlider extends DLinearTrack {
 			g.setColor(csdrSlideBorder);
 			g.drawOval(cx - 5, cy - 12, 10, 24);
 		}
+		// Control name
+		displayString(g, DBase.globalSliderFont, name);
 
 		if(this == selected)
 			drawSelector(g);

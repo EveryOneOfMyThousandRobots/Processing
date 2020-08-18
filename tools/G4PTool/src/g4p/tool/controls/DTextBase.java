@@ -1,13 +1,13 @@
 package g4p.tool.controls;
 
+import java.awt.Graphics2D;
+import java.awt.font.TextLayout;
+import java.util.LinkedList;
+
 import g4p.tool.G;
 import g4p.tool.gui.propertygrid.Validator;
 import g4p_controls.StyledString;
 import g4p_controls.StyledString.TextLayoutInfo;
-
-import java.awt.Graphics2D;
-import java.awt.font.TextLayout;
-import java.util.LinkedList;
 
 
 @SuppressWarnings("serial")
@@ -18,7 +18,7 @@ public abstract class DTextBase extends DBaseVisual {
 	protected Zone textZone = new Zone("Text");
 	protected int textHAlign, textVAlign;
 
-	public  StyledString stext = null;
+	public StyledString stext = null;
 
 	public String 		_0130_text = "";
 	public String 		text_label = "Text";

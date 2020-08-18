@@ -1,15 +1,14 @@
 package g4p.tool.controls;
 
+import java.awt.Graphics2D;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import g4p.tool.G;
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.propertygrid.EditorBase;
 import g4p.tool.gui.propertygrid.EditorJComboBox;
 import g4p_controls.G4P;
-
-import java.awt.Graphics2D;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
@@ -58,6 +57,7 @@ public class DStick extends DBaseVisual {
 			g.fillRect(0, 0, _0826_width, _0827_height);
 		}
 		
+		G.pushMatrix(g);
 		g.translate(_0826_width/2, _0827_height/2);
 		//g.setTransform(af);
 
@@ -69,16 +69,12 @@ public class DStick extends DBaseVisual {
 		int actionRad =  Math.round(ledRingRad/2.0f);
 		int gripRad = Math.round(4.0f * mag);
 		
-
 		// Outer ring and surface
 		g.setStroke(selStroke);
 		g.setColor(jpalette[6]);
 		g.fillOval(-ledRingRad, -ledRingRad, 2*ledRingRad, 2*ledRingRad);
 		g.setColor(jpalette[1]);
 		g.drawOval(-ledRingRad, -ledRingRad, 2*ledRingRad, 2*ledRingRad);
-
-//		G.pushMatrix(g);
-//		g.translate(_0820_x, _0821_y);
 		
 		int delta = 2/mode;
 		for(int i = 0; i < 8; i+= delta){
@@ -91,7 +87,6 @@ public class DStick extends DBaseVisual {
 			}
 			g.rotate(RAD45 * delta);
 		}
-//		G.popMatrix(g);
 
 		// Inner ring and surface
 		g.setColor(jpalette[5]);
@@ -104,8 +99,10 @@ public class DStick extends DBaseVisual {
 		g.fillOval(-gripRad, -gripRad, 2*gripRad, 2*gripRad);
 		g.setColor(jpalette[1]);
 		g.drawOval(-gripRad, -gripRad, 2*gripRad, 2*gripRad);
+		G.popMatrix(g);
 
-		g.translate(-_0826_width/2, -_0827_height/2);
+		// Control name
+		displayString(g, DBase.globalDisplayFont, name);
 
 		if(this == selected)
 			drawSelector(g);

@@ -8,13 +8,13 @@ public class DTextStyle extends DTextBase {
 
 	public Boolean 		_0136_bold  = false;
 	public Boolean 		bold_edit = true;
-	public Boolean 		bold_show = true;
+	public Boolean 		bold_show = false;
 	public String 		bold_label = "Bold";
 	public String 		bold_updater = "updateStyle";
 
 	public Boolean 		_0137_italic  = false;
 	public Boolean 		italic_edit = true;
-	public Boolean 		italic_show = true;
+	public Boolean 		italic_show = false;
 	public String 		italic_label = "Italic";
 	public String 		italic_updater = "updateStyle";
 

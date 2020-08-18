@@ -3,6 +3,7 @@ package g4p.tool.controls;
 import g4p.tool.G;
 import g4p.tool.ToolMessages;
 import g4p.tool.gui.propertygrid.Validator;
+import g4p_controls.StyledString;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class DPassword extends DBaseVisual {
 		super();
 		componentClass = "GPassword";
 		set_name(NameGen.instance().getNext("password"));
+		name = new StyledString(_0010_name);
 		set_event_name(NameGen.instance().getNext(get_name()+ "_change"));
 		_0826_width = 160;
 		_0827_height = 30;
@@ -68,6 +70,7 @@ public class DPassword extends DBaseVisual {
 
 	public void draw(Graphics2D g, DBase selected){
 		G.pushMatrix(g);
+		g.setFont(DBase.globalInputFont);
 		g.translate(_0820_x, _0821_y);
 
 		if(_0600_opaque){

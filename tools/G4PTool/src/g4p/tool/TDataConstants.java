@@ -19,6 +19,8 @@ public interface TDataConstants {
 	int STICK_TYPE			= 	0x0000002C;
 	int CLOSE_ACTION		= 	0x0000002D;
 	int SCALE				= 	0x0000002E;
+	int FONT				= 	0x0000002F;
+	int FONT_STYLE			= 	0x00000030;
 	
 	int VALID				=	0x00000040;
 	int INVALID_LENGTH		=	0x00000041;
@@ -76,24 +78,30 @@ public interface TDataConstants {
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 * Creator and initialisation patterns
 	 */
-	String SET_SKETCH_TITLE		=	"  surface.setTitle(\"{0}\");\n";
-	String SET_SKETCH_COLOR		= 	"  G4P.setGlobalColorScheme(GCScheme.{0});\n";
-	String SET_G4P_MESSAGES		=  	"  G4P.messagesEnabled({0});\n";
-	String SET_CURSOR_OFF		=	"  G4P.setCursor({0});\n";
-	String SET_MOUSE_OVER_ON	=	"  G4P.setMouseOverEnabled({0});\n";
-	String SET_ROUND_CORNERS	=	"  GButton.useRoundCorners({0});\n";
+	String SET_SKETCH_TITLE			=	"  surface.setTitle(\"{0}\");\n";
+	String SET_SKETCH_COLOR			= 	"  G4P.setGlobalColorScheme(GCScheme.{0});\n";
+	String SET_G4P_MESSAGES			=  	"  G4P.messagesEnabled({0});\n";
+	String SET_CURSOR_OFF			=	"  G4P.setCursor({0});\n";
+	String SET_MOUSE_OVER_ON		=	"  G4P.setMouseOverEnabled({0});\n";
+	String SET_ROUND_CORNERS		=	"  GButton.useRoundCorners({0});\n";
+	String SET_GLOBAL_DISPLAY_FONT	=	"  G4P.setDisplayFont(\"{0}\", {1}, {2});\n";
+	String SET_GLOBAL_INPUT_FONT	=	"  G4P.setInputFont(\"{0}\", {1}, {2});\n";
+	String SET_GLOBAL_SLIDER_FONT	=	"  G4P.setSliderFont(\"{0}\", {1}, {2});\n";
 	
-	String SET_TEXT				=	"  {0}.setText(\"{1}\");\n";
-	String SET_PROMPT_TEXT		=	"  {0}.setPromptText(\"{1}\");\n";
-	String SET_TEXT_ALIGN		=	"  {0}.setTextAlign(GAlign.{1}, GAlign.{2});\n";
-	String SET_ICON				= 	"  {0}.setIcon(\"{1}\", {2}, GAlign.{3}, GAlign.{4}, GAlign.{5});\n";
-	String SET_ICON_POS			=	"  {0}.setIconPos(GAlign.{1});\n";
-	String SET_ICON_ALIGN		=	"  {0}.setIconAlign(GAlign.{1}, GAlign.{2});\n";
-	String SET_TEXT_BOLD		=	"  {0}.setTextBold();\n";
-	String SET_TEXT_ITALIC		=	"  {0}.setTextItalic();\n";
-	String SET_OPAQUE			=	"  {0}.setOpaque({1});\n";
-	String SET_ACTION_ON_CLOSE	=	"  {0}.setActionOnClose(G4P.{1});\n";
-	String SET_LOCAL_COLOR		=	"  {0}.setLocalColorScheme(GCScheme.{1});\n";
+	//void setTextFont(String familyName, int style, int size) {
+//	String SET_DEFAULT_FONT_SIZE	=	"  G4P.setDefaultFontSize({0}, {1});\n";
+	
+	String SET_TEXT					=	"  {0}.setText(\"{1}\");\n";
+	String SET_PROMPT_TEXT			=	"  {0}.setPromptText(\"{1}\");\n";
+	String SET_TEXT_ALIGN			=	"  {0}.setTextAlign(GAlign.{1}, GAlign.{2});\n";
+	String SET_ICON					= 	"  {0}.setIcon(\"{1}\", {2}, GAlign.{3}, GAlign.{4}, GAlign.{5});\n";
+	String SET_ICON_POS				=	"  {0}.setIconPos(GAlign.{1});\n";
+	String SET_ICON_ALIGN			=	"  {0}.setIconAlign(GAlign.{1}, GAlign.{2});\n";
+	String SET_TEXT_BOLD			=	"  {0}.setTextBold();\n";
+	String SET_TEXT_ITALIC			=	"  {0}.setTextItalic();\n";
+	String SET_OPAQUE				=	"  {0}.setOpaque({1});\n";
+	String SET_ACTION_ON_CLOSE		=	"  {0}.setActionOnClose(G4P.{1});\n";
+	String SET_LOCAL_COLOR			=	"  {0}.setLocalColorScheme(GCScheme.{1});\n";
 
 	
 	// 		GWindow(PApplet theApplet, String name, int x, int y, int w, int h, boolean noFrame, String mode)

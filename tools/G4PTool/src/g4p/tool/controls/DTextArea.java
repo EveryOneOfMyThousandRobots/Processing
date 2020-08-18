@@ -1,12 +1,12 @@
 package g4p.tool.controls;
 
-import g4p.tool.G;
-import g4p.tool.ToolMessages;
-import g4p.tool.gui.propertygrid.Validator;
-
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import g4p.tool.G;
+import g4p.tool.ToolMessages;
+import g4p.tool.gui.propertygrid.Validator;
 
 @SuppressWarnings("serial")
 public class DTextArea extends DTextBase {
@@ -82,8 +82,8 @@ public class DTextArea extends DTextBase {
 		g.fillRect(1, 1, _0826_width-2, _0827_height-2);
 		g.setStroke(stdStroke);
 
-		g.setColor(jpalette[2]);
-		g.drawString(this._0010_name, 4, 12 );
+//		g.setColor(jpalette[2]);
+//		g.drawString(this._0010_name, 4, 12 );
 
 		g.setColor(jpalette[3]);
 		if(_0186_horz_scrollbar)
@@ -91,6 +91,9 @@ public class DTextArea extends DTextBase {
 		if(_0187_vert_scrollbar)
 			g.fillRect(_0826_width - 12, 2, 10, _0827_height - 12);
 
+		g.setColor(jpalette[2]);
+		displayString(g, DBase.globalInputFont, name);
+		
 		if(this == selected)
 			drawSelector(g);
 		else {
